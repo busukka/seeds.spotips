@@ -9,7 +9,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.seeds.spotips.bean.Member;
 import com.seeds.spotips.dao.ImemberDao;
 
-
 @Service
 public class MemberManagement {
 	@Autowired
@@ -32,5 +31,4 @@ public class MemberManagement {
 		return mav;
 	}
 
-	
 }

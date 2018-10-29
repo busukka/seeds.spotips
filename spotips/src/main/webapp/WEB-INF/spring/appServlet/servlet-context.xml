@@ -12,19 +12,13 @@
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 
-	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
-	up static resources in the ${webappRoot}/resources directory -->
-	
-	
-	<!-- 아래 경로는 디스패처서블릿이 가로채지말고 그전에 따로검색을 하게끔 하는것 -->
-	<!-- 반드시 wepapp/resources폴더에 생성한다. -->
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<!-- <resources mapping="/resources/**" location="/resources/" /> -->
 	
 	<resources location="/WEB-INF/views/images/" mapping="/images/**"></resources>
 	<resources location="/WEB-INF/views/css/" mapping="/css/**"></resources>
 	<resources location="/WEB-INF/views/js/" mapping="/js/**"></resources>
 	<resources location="/WEB-INF/views/jquery/" mapping="/jquery/**"></resources>
-		
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -32,7 +26,6 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<!-- 컨트롤러가 있는 패키지 설정. 디스패처서블릿이 요청을 받고 그요청을 컨트롤러에 보낼때 컨트롤러를 탐색할 위치 -->
 	<context:component-scan base-package="com.seeds.spotips" />
 	
 	<!-- Spring JNDI :: DBCP -->
@@ -125,7 +118,9 @@
 							proxy-target-class="false"/> -->
 	<!-- transaction-manager="transactionManager"이 기본값 --><!-- proxy-target-class="false"도 생략하면 기본값으로 적용되니 안써도됨 -->		
 		
-		
+	
+	
+	
 	
 	
 </beans:beans>

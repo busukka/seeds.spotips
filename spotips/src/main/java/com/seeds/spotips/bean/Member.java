@@ -4,11 +4,9 @@ import org.apache.ibatis.type.Alias;
 
 @Alias("member")
 public class Member {
-	private String mb_id;
+	private String mb_id; //테이블의 컬럼명과 같게하면 이점이 있다. 대문자로는 쓰면안됨
 	private String mb_pw;
 	private String mb_name;
-	
-	
 	public String getMb_id() {
 		return mb_id;
 	}
@@ -28,5 +26,7 @@ public class Member {
 		this.mb_name = mb_name;
 	}
 	
-
+	
+	
+	
 }
