@@ -14,7 +14,7 @@ import com.seeds.spotips.service.MemberManagement;
 
 //1
 //2
-//3s
+//3
 @Controller
 //@SessionAttributes("mb")
 public class MemberController {
