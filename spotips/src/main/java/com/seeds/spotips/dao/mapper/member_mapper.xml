@@ -8,17 +8,18 @@
 3.resultType도 1개만 올 수 있는데 1개 이상의 레코드를 검색하는 경우도 bean타입만 명시하면 된다.
  -->
 <mapper namespace="com.seeds.spotips.dao.ImemberDao">
+
 	<!-- id가 ImemberDao 클래스의 메소드이름과 일치해야함 -->
-	<select id="getLoginResult"      
-	parameterType="member" resultType="Integer"> 
-	SELECT COUNT(*) FROM BM WHERE BM_ID=#{bm_id} AND BM_PW=#{bm_pw}    
+	<select id="getSecurityPw"      
+	parameterType="String" resultType="String"> 
+	SELECT MB_PW FROM VIEW_MBLOGIN WHERE MB_ID=#{mb_id}   
 	</select> 
 	<!--  parameterType="Member" 다음부터는 이렇게 쓰면됨(mybatis-config.xml(mybatis 공통 환경설정)에 설정했으니) -->
 	 <!-- sql문의 중괄호 안은 소문자로 써야함 멤버빈의 필드명이기 때문에 -->
 	
-	<insert id="memberInsert"
-	parameterType="member" >
-	INSERT INTO MB VALUES(#{mb_id},#{mb_pw},#{mb_name})
-	</insert>  
+	<select id="getSerial"      
+	parameterType="String" resultType="Integer"> 
+	SELECT MB_SERIAL FROM VIEW_MBLOGIN WHERE MB_ID=#{mb_id}   
+	</select> 
 	
 </mapper>

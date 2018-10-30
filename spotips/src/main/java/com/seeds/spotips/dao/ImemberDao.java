@@ -5,6 +5,9 @@ import com.seeds.spotips.bean.Member;
 public interface ImemberDao {
 	
 	
-boolean memberInsert(Member mb);
+
+String getSecurityPw(String mb_id);
+
+int getSerial(String mb_id);
 
 }
