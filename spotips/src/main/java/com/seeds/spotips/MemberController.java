@@ -23,6 +23,7 @@ import com.seeds.spotips.service.MemberManagement;
 //9
 //10
 //a
+//B
 
 @Controller
 //@SessionAttributes("mb")
