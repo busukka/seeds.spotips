@@ -14,12 +14,13 @@ import com.seeds.spotips.service.MemberManagement;
 
 //1
 //2
+//3s
 @Controller
 //@SessionAttributes("mb")
 public class MemberController {
 	
 	@Autowired
-	private MemberManagement mm; //회원관리 서비스 클래스
+	private MemberManagement mm; //�쉶�썝愿�由� �꽌鍮꾩뒪 �겢�옒�뒪
 	@Autowired
 	HttpSession session;
 	
