@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<!-- <resources mapping="/resources/**" location="/resources/" /> -->
+	
+	<resources location="/WEB-INF/views/images/" mapping="/images/**"></resources>
+	<resources location="/WEB-INF/views/css/" mapping="/css/**"></resources>
+	<resources location="/WEB-INF/views/js/" mapping="/js/**"></resources>
+	<resources location="/WEB-INF/views/jquery/" mapping="/jquery/**"></resources>
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<context:component-scan base-package="com.seeds.spotips" />
+	
+	<!-- Spring JNDI :: DBCP -->
+	<beans:bean id="dataSource"
+		class="org.springframework.jndi.JndiObjectFactoryBean">
+		<beans:property name="jndiName" value="jdbc/myOracle" />
+		<!-- name은 정해져있는것(JadiObjectFactoryBean의 필드) value는 아까 서버단에 커넥션 네이밍해준거 -->
+		<beans:property name="resourceRef" value="true" />
+		<!-- name은 정해져있는것 -->
+	</beans:bean>
+	
+	<!-- 개발할때는 DBCP말고 JDBC로 써도됨 -->
+	<!-- JDBC : Connection이 1개만 존재 -->
+	
+	<!-- <beans:bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<beans:property name="driverClassName" value="net.sf.log4jdbc.DriverSpy" /> 
+		<beans:property name="url" value="jdbc:log4jdbc:oracle:thin:@127.0.0.1:1521:XE" />db아이피
+		<beans:property name="username" value="SEEDS" />
+
+		<beans:property name="password" value="9441" />
+	</beans:bean>  -->
+	
+	<!-- sqlSessionFactory :: mybatis가 사용 -->
+	<beans:bean id="sqlSessionFactory"	class="org.mybatis.spring.SqlSessionFactoryBean">
+
+		<beans:property name="dataSource" ref="dataSource"></beans:property>
+		<!-- 위 커넥션풀의 데이터 정보를 참조하겠다 -->
+		<!--SqlSessionFactoryBean클래스 안에 dataSource(name)라는 변수(필드)에 위 DBCP 설정 정보데이터(id=dataSource)를 
+			끼워 넣어준것 -->
+
+	<!-- 	공통환경xml위치설정(configLocation)과 mapperLocations를 하나의 폴더에 넣어놓으면 config를 2번읽어 들여서 오류뜸
+		같은 폴더에 넣고 오류 없애고 싶다면 아래처럼 작성
+			<beans:property name="configLocation"
+			value="classpath:com/board/zyz/dao/mybatis-config.xml" />
+		    <beans:property name="mapperLocations"
+			value="classpath:com/**/dao/*mapper.xml"/> 
+			-->
+		<beans:property name="configLocation"
+			value="classpath:com/seeds/spotips/dao/mybatis-config.xml" /><!-- 
+			mybatis-conf.xml: mybatis에서 사용할 공통 환경설정(sql문을 제외한) -->
+
+		<beans:property name="mapperLocations"
+			value="classpath:com/**/mapper/*.xml"/>
+			<!-- "classpath:com/board/zyz/dao/mapper/member_mapper.xml" /> -->
+		<!-- classpath:"com/board/zyz/dao/mapper/board_mapper.xml" -->
+		<!-- classpath:"com/**/mapper/*.xml"로 설정해도됨 -->
+		<!-- member_mapper.xml : member에 관련된 sql문 설정들이 들어감 board_mapper.xml : board에 
+			관련된 sql문 설정들이들어감 -->
+
+		<!--classpath: src/main/java를 클래스패스로 자바가 인식되어있음 즉 classpath는 패키지를 포함한 그 이하 경로 -->
+		<!-- WEB-INF에 설정시 얘는 클래스패스가 아니라서 설정이다름 WEB INF이하에 mybatis폴더와 xml을 만듬 <beans:property 
+			name="configLocation" value="/WEB=INF/mybatis/mybatis-conf.xml"></beans:property> -->
+	</beans:bean>
+
+
+	<!-- DAO using -->
+	<!-- ImemberDao와 IboardDao라는 인터페이스를 만들어서 위의 mapper.xml과 결합해서 FactoryBean(인스턴스)을 만듬 -->
+	<!-- di컨테이너에 들어간다 -->
+	<beans:bean id="mDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<beans:property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<beans:property name="mapperInterface"	value="com.seeds.spotips.dao.ImemberDao"/>
+	</beans:bean>
+
+
+	<!-- <beans:bean id="bDao" class="org.mybatis.spring.mapper.MapperFactoryBean"> 
+		<beans:property name="sqlSessionFactory" ref="sqlSessionFactory" /> 
+		<beans:property name="mapperInterface" value="com.board.zyz.dao.IBoardDao"/> 
+	</beans:bean> -->
+	
+	<!-- 파일첨부(Multipart Resolver) 설정:
+	form태그가 entype="multipart/form-data"인 경우
+	서버의 Bean으로 전달해줌 -->
+	<!-- 아래 아이디는 틀리면안됨 -->
+	<!-- <beans:bean id="multipartResolver"
+	class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="defaultEncoding" value="UTF-8"/>
+		<beans:property name="maxUploadSize" value="10000000"/>10MB
+		<beans:property name="maxInMemorySize" value="10000000"/>10MB
+	</beans:bean> -->
+	
+	<!-- id는 반드시 transactionManager라고 해야함 -->
+	<beans:bean id="transactionManager"
+	class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  <!-- 트랜잭션 매니저가 스프링에서제공됨 -->
+		<beans:property name="dataSource" ref="dataSource"/>				<!-- ref=dataSource는 위의 db에 관련된 데이터 그걸 참조한다는것(내가 트랜잭션 걸 db)-->
+		
+	</beans:bean>
+	<!-- @Transactional 어노테이션 사용하기 위해 --><!-- 왼쪽에 쌍화살표가 생기면 제대로 트랜잭션 어노테이션 적용된다는것  -->
+	<!-- <tx:annotation-driven transaction-manager="transactionManager"
+							proxy-target-class="false"/> -->
+	<!-- transaction-manager="transactionManager"이 기본값 --><!-- proxy-target-class="false"도 생략하면 기본값으로 적용되니 안써도됨 -->		
+		
+	
+	
+	
+	
+	
+</beans:beans>
