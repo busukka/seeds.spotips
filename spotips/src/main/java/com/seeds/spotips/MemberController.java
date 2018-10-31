@@ -7,10 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.seeds.spotips.service.MemberManagement;
+
 
 //1
 //2
@@ -24,7 +24,6 @@ import com.seeds.spotips.service.MemberManagement;
 //10
 //a
 //B
-//형진/A
 
 
 @Controller
