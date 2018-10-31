@@ -24,7 +24,7 @@ import com.seeds.spotips.service.MemberManagement;
 //10
 //a
 //B
-//형진/d123
+//형진/e123
 
 @Controller
 //@SessionAttributes("mb")
