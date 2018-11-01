@@ -93,6 +93,17 @@
 		<beans:property name="sqlSessionFactory" ref="sqlSessionFactory" />
 		<beans:property name="mapperInterface"	value="com.seeds.spotips.dao.ImemberDao"/>
 	</beans:bean>
+
+	<beans:bean id="bDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<beans:property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<beans:property name="mapperInterface"	value="com.seeds.spotips.dao.BoardDao"/>
+	</beans:bean>
+
+
+	<!-- <beans:bean id="bDao" class="org.mybatis.spring.mapper.MapperFactoryBean"> 
+		<beans:property name="sqlSessionFactory" ref="sqlSessionFactory" /> 
+		<beans:property name="mapperInterface" value="com.board.zyz.dao.IBoardDao"/> 
+	</beans:bean> -->
 	
 	<!-- 파일첨부(Multipart Resolver) 설정:
 	form태그가 entype="multipart/form-data"인 경우
