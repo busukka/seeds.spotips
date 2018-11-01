@@ -33,6 +33,7 @@ public class MemberController {
 	public ModelAndView home() {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("loginPg");
+		
 		return mav;
 		
 	}
