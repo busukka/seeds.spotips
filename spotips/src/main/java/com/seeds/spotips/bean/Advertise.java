@@ -2,9 +2,6 @@ package com.seeds.spotips.bean;
 
 import org.apache.ibatis.type.Alias;
 
-//영재/A
-//영재/B
-//영재/C
 @Alias("ad")
 public class Advertise {
 	private String ad_no; //광고번호

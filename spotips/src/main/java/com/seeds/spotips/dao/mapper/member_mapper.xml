@@ -22,4 +22,26 @@
 	SELECT MB_SERIAL FROM VIEW_MBLOGIN WHERE MB_ID=#{mb_id}   
 	</select> 
 	
+	<select id="mailCheck"
+	parameterType="String" resultType="String">
+	SELECT MB_ID FROM VIEW_MBLOGIN WHERE MB_ID=#{mail}
+	
+	</select>
+	
+	<select id="nameCheck"
+	parameterType="String" resultType="String">
+	SELECT MB_NAME FROM VIEW_MBLOGIN WHERE MB_NAME=#{name}
+	</select>
+	
+	<insert id="insertGm"
+	parameterType="gm">
+	INSERT INTO GM VALUES(DEFAULT,#{gm_id},#{gm_name},#{gm_pw},
+	#{gm_birth},#{gm_gender},DEFAULT,'안녕하세요',DEFAULT,DEFAULT,DEFAULT,DEFAULT)
+	</insert>
+	
+	<!-- Insert일반회원주소 -->
+	<insert id="insertAddr"
+	parameterType="ma">
+	INSERT INTO MA VALUES(#{ma_gmid},#{ma_addr})
+	</insert>
 </mapper>
