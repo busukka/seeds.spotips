@@ -1,6 +1,5 @@
 package com.seeds.spotips;
 
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,8 +13,6 @@ public class AdminController {
 
 	@Autowired
 	private AdminManagement am;
-	@Autowired
-	private HttpSession session;
 	
 	@RequestMapping("/adminPg") //관리자 페이지
 	public ModelAndView adminPg() {
@@ -25,42 +22,52 @@ public class AdminController {
 		return mav;
 	}
 	
-	@RequestMapping("/genManagement") //일반회원관리
-	public ModelAndView genManagement() {
+	@RequestMapping("/loadGenList") //일반회원관리 페이지 이동 - 일반회원 전체조회
+	public ModelAndView loadGenList() {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("genManagement");
+		System.out.println("컨트롤러 들어옴");
+		mav=am.loadGenList();
 		
 		return mav;
 		
 	}
-	@RequestMapping("/busManagement") //기업회원관리
+	@RequestMapping("/generalSearch") //일반회원조회(검색)
+	public ModelAndView generalSearch() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("genManagementPg");
+		
+		return mav;
+		
+	}
+	
+	@RequestMapping("/businessSearch") //기업회원관리
 	public ModelAndView busManagement() {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("busManagement");
+		mav.setViewName("busManagementPg");
 		
 		return mav;
 		
 	}
-	@RequestMapping("/adminConcern") //관심분야 관리
+	@RequestMapping("/goConcernPg") //관심분야 관리
 	public ModelAndView adminConcern() {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("adminConcern");
+		mav.setViewName("adminConcernPg");
 		
 		return mav;
 		
 	}
-	@RequestMapping("/genBlackList") //일반회원 블랙리스트 관리
+	@RequestMapping("/genBlackListSearch") //일반회원 블랙리스트 관리
 	public ModelAndView genBlackList() {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("genBlackList");
+		mav.setViewName("genBlackListPg");
 		
 		return mav;
 		
 	}
-	@RequestMapping("/busBlackList") //기업회원 블랙리스트 관리
+	@RequestMapping("/busBlackListSearch") //기업회원 블랙리스트 관리
 	public ModelAndView busBlackList() {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("busBlackList");
+		mav.setViewName("busBlackListPg");
 		
 		return mav;
 		
@@ -68,7 +75,7 @@ public class AdminController {
 	@RequestMapping("/reportManagement") //신고관리
 	public ModelAndView reportManagement() {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("reportManagement");
+		mav.setViewName("reportManagementPg");
 		
 		return mav;
 		
@@ -76,7 +83,7 @@ public class AdminController {
 	@RequestMapping("/partyManagement") //모임관리
 	public ModelAndView partyManagement() {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("partyManagement");
+		mav.setViewName("partyManagementPg");
 		
 		return mav;
 		
