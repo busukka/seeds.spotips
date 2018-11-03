@@ -10,7 +10,7 @@
 <mapper namespace="com.seeds.spotips.dao.BoardDao">
 
 	<!-- id가 ImemberDao 클래스의 메소드이름과 일치해야함 -->
-	<select id="getBoardList"   resultType="b"> 
+	<select id="getBoardList"  resultType="b"> 
 	SELECT * FROM B
 	</select>
 	<!--  parameterType="Member" 다음부터는 이렇게 쓰면됨(mybatis-config.xml(mybatis 공통 환경설정)에 설정했으니) -->
@@ -21,4 +21,23 @@
 	SELECT MB_SERIAL FROM VIEW_MBLOGIN WHERE MB_ID=#{mb_id}   
 	</select>  -->
 	
+	<insert id="postUpload" parameterType="b" useGeneratedKeys="true" keyProperty="b_no">
+		<selectKey keyProperty="b_no" resultType="int" order="BEFORE">
+			SELECT B_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO B
+		VALUES('B'||${b_no},#{b_mbid},#{b_flno},#{b_content},DEFAULT,DEFAULT,DEFAULT)
+	</insert>
+	
+	
+	<insert id="fileUpload" parameterType="HashMap">
+		INSERT INTO BF VALUES(#{bNum},#{oriFileName},#{sysFileName},#{path})   
+	</insert> 
+	
 </mapper>
+
+
+
+
+
+

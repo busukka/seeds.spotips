@@ -13,6 +13,7 @@
 
 <body>
 <h5>보드페이지!</h5>
+<a href="gopostUploadPg">게시판 생성!</a><br/>
 ${makeBList}
 
 </body>

@@ -6,7 +6,7 @@ import org.apache.ibatis.type.Alias;
 public class Board {
 	private String b_no;// 게시물번호
 	private String b_mbid;// 이메일
-	private String b_flno;// 분야번호
+	private int b_flno;// 분야번호
 	private String b_content;// 내용
 	private String b_date;// 날짜
 	private int b_openlv;// 공개비공개
@@ -24,10 +24,10 @@ public class Board {
 	public void setB_mbid(String b_mbid) {
 		this.b_mbid = b_mbid;
 	}
-	public String getB_flno() {
+	public int getB_flno() {
 		return b_flno;
 	}
-	public void setB_flno(String b_flno) {
+	public void setB_flno(int b_flno) {
 		this.b_flno = b_flno;
 	}
 	public String getB_content() {
