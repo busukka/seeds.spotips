@@ -3,9 +3,7 @@ package com.seeds.spotips.bean;
 import org.apache.ibatis.type.Alias;
 
 
-/*현서/A*/
-/*현서/B*/
-/*현서/C*/
+
 @Alias("a")
 public class Alarm {
 	private String a_outid;//알람 발신자

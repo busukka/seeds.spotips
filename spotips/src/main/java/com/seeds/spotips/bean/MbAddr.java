@@ -1,11 +1,13 @@
 package com.seeds.spotips.bean;
 
+import java.util.ArrayList;
+
 import org.apache.ibatis.type.Alias;
 
 @Alias("ma")
 public class MbAddr {
 	private String ma_gmid; //이메일
-	private String ma_addr; //회원서버
+	private String ma_addr; //회원주소
 	
 	public String getMa_gmid() {
 		return ma_gmid;

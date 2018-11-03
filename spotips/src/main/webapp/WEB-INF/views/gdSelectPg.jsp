@@ -17,9 +17,13 @@ border-collapse: collapse;
 <body>
 
 <h1>gbSelectPg.jsp</h1>
-
 <table>
-<tr>
+${gbSelectHtml} 
+</table>
+
+</body>
+
+<!-- <tr>
 <td colspan="2"> <a href="./joinGenPg">일반회원가입</a> </td>
 </tr>
 <tr>
@@ -31,8 +35,5 @@ border-collapse: collapse;
 <tr>
 <td colspan="2"> <a href="./remindBusPwPg">기업회원비번찾기</a> </td>
 </tr>
-
-</table>
-
-</body>
+ -->
 </html>

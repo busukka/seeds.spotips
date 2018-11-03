@@ -29,12 +29,12 @@ SPOTIPS
 	
 	<tr>
 	<td align="center" bgcolor="green"><input type="submit" value="로그인" /> </td>
-	<td colspan="1" align="center" bgcolor="purple"> <a href="./gdSelectPg">비밀번호찾기</a> </td>
+	<td colspan="1" align="center" bgcolor="purple"> <a href="./gdSelectPg?select=remind">비밀번호찾기</a> </td>
 	</tr>
 	
 	
 	<tr>
-	<td colspan="2" align="center" background="green"> <a href="./gdSelectPg">스포팁스 시작하기</a> </td>
+	<td colspan="2" align="center" background="green"> <a href="./gdSelectPg?select=join">스포팁스 시작하기</a> </td>
 	</tr>
 	
 	<tr>
