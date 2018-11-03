@@ -66,7 +66,7 @@ border-collapse: collapse;
 			<td><input type="text" name="gm_name" id="mb_name" placeholder="(대소문자 구분)"/></td>
 			<td><input type="button" value="중복체크" onclick="nameCheck()" 
 			onMouseOver="this.style.backgroundColor='red'"
-		onMouseOut="this.style.backgroundColor='white'" /></td>
+			onMouseOut="this.style.backgroundColor='white'" /></td>
 		</tr>
 		
 		<tr>
@@ -244,6 +244,7 @@ function certNoCheck() {
 			if(data){ //session영역상태 : setAttribute("certStatus", true)
 			alert('인증이가 완료.');
 			$('#inputCertNo').removeClass('open');
+			$('#sendCertificationNo').removeClass('open');
 			}else{
 				alert('인증번호가 틀렸습니다.')
 				$('#certNo').focus();
