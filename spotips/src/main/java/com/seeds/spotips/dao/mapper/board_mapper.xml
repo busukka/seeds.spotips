@@ -11,28 +11,25 @@
 
 	<!-- id가 ImemberDao 클래스의 메소드이름과 일치해야함 -->
 	<select id="getBoardList"  resultType="b"> 
-	SELECT * FROM B
+	SELECT * FROM B ORDER BY B_DATE DESC
 	</select>
-	<!--  parameterType="Member" 다음부터는 이렇게 쓰면됨(mybatis-config.xml(mybatis 공통 환경설정)에 설정했으니) -->
-	 <!-- sql문의 중괄호 안은 소문자로 써야함 멤버빈의 필드명이기 때문에 -->
 	
-	<!-- <select id="getSerial"      
-	parameterType="String" resultType="Integer"> 
-	SELECT MB_SERIAL FROM VIEW_MBLOGIN WHERE MB_ID=#{mb_id}   
-	</select>  -->
-	
-	<insert id="postUpload" parameterType="b" useGeneratedKeys="true" keyProperty="b_no">
-		<selectKey keyProperty="b_no" resultType="int" order="BEFORE">
-			SELECT B_SEQ.NEXTVAL FROM DUAL
+	<insert id="postUpload" parameterType="b">
+		<selectKey keyProperty="b_no" resultType="String" order="AFTER">
+			SELECT 'B'||B_SEQ.CURRVAL FROM DUAL
 		</selectKey>
 		INSERT INTO B
-		VALUES('B'||${b_no},#{b_mbid},#{b_flno},#{b_content},DEFAULT,DEFAULT,DEFAULT)
+		VALUES('B'||B_SEQ.NEXTVAL,#{b_mbid},#{b_flno},#{b_content},DEFAULT,DEFAULT,DEFAULT)
 	</insert>
 	
 	
 	<insert id="fileUpload" parameterType="HashMap">
-		INSERT INTO BF VALUES(#{bNum},#{oriFileName},#{sysFileName},#{path})   
+		INSERT INTO BU VALUES(#{b_no},#{sysFileName},#{oriFileName},#{path})   
 	</insert> 
+	
+	<select id="getBoardUploadList"  resultType="bu"> 
+	SELECT * FROM BU
+	</select>
 	
 </mapper>
 

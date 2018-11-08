@@ -12,12 +12,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.seeds.spotips.service.BoardManagement;
 
+
 @Controller
 public class BoardController {
 
 	
 	@Autowired
 	private BoardManagement bm;
+	
 	@Autowired
 	HttpSession session;
 	@Autowired
@@ -27,22 +29,35 @@ public class BoardController {
 	
 	ModelAndView mav;
 	
+	
 	@RequestMapping("/getBoardList")
 	public ModelAndView home() {
+		System.out.println("컨트롤러 오케이");
 		mav=bm.getBoardList();
 		return mav;
 	};
-	
 	@RequestMapping("/gopostUploadPg")
 	public ModelAndView gopostUploadPg() {
 		mav = new ModelAndView();
 		mav.setViewName("postUploadPg");
 		return mav;
 	};
+	@RequestMapping("/peed")
+	public ModelAndView peed() {
+		mav = new ModelAndView();
+		mav.setViewName("peed");
+		return mav;
+	};
+	@RequestMapping("/boardPg")
+	public ModelAndView boardPg() {
+		mav = new ModelAndView();
+		mav.setViewName("boardPg");
+		return mav;
+	};
 	
-	@RequestMapping("/postUpload")
-	public ModelAndView postUpload(MultipartHttpServletRequest multi) {
-		mav=bm.postUpload(multi);
+	@RequestMapping("/showPostDetailPg")
+	public ModelAndView postUpload(String b_no) {
+		mav=bm.showPostDetailPg(b_no);
 		return mav;
 	};
 	

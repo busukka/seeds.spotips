@@ -8,7 +8,10 @@ import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -32,24 +35,31 @@ public class UploadFile {
 		String root=multi.getSession().getServletContext().getRealPath("/");
 		System.out.println("root="+root);
 		String path=root+"resources/upload/";
+		System.out.println("path="+path);
 		//2.폴더 생성을 꼭 할것...
 		File dir=new File(path);
 		if(!dir.isDirectory()){  //upload폴더 없다면
-			dir.mkdir();  //upload폴더 생성
+			dir.mkdirs();  //upload폴더 생성
 		}
 		//3.파일을 가져오기-파일태그 이름들 반환
-		Iterator<String> files=multi.getFileNames(); //파일업로드 2개이상일때
+		
+		List<MultipartFile> file=multi.getFiles("bu_files");
+		
+		//Iterator<String> files=multi.getFileNames(); //파일업로드 2개이상일때
 		Map<String,String> fMap=new HashMap<String, String>();
-		fMap.put("b_no", String.valueOf(b_no));
+		fMap.put("b_no", b_no);
 		fMap.put("path", path);
 		boolean f=false;
 		
-		
-		while(files.hasNext()){
-			String fileTagName=files.next();
+		for(int i=0;i<file.size();i++) {
+			String fname=file.get(i).getOriginalFilename();
+			System.out.println("file"+i+":"+fname);
+			String fileTagName=fname;
 			//파일 메모리에 저장
-			MultipartFile mf=multi.getFile(fileTagName); //실제파일
-			String oriFileName=mf.getOriginalFilename();  //a.txt
+			//MultipartFile mf=multi.getFile(fileTagName); //실제파일
+			MultipartFile mf=file.get(i); //실제파일
+			//String oriFileName=mf.getOriginalFilename();  //a.txt
+			String oriFileName=fileTagName;
 			fMap.put("oriFileName", oriFileName);
 			
 			System.out.println("oriFileName="+oriFileName);
@@ -59,17 +69,16 @@ public class UploadFile {
 					+oriFileName.substring(oriFileName.lastIndexOf(".")+1);
 			fMap.put("sysFileName", sysFileName);
 			System.out.println("sysFileName="+sysFileName);
-			
 			//5.메모리->실제 파일 업로드
 			
 			try {
 				mf.transferTo(new File(path+sysFileName));
 				f=bDao.fileUpload(fMap);
 			}catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} //while End
+		} //for end
+		
 		if(f)
 			return true;
 		return false;
