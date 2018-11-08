@@ -51,6 +51,7 @@ public ModelAndView loginAccess(String mb_id, String mb_pw) {
 					view="main";
 				}else if(selectCon==0) {//관심분야 선택 여부 0=아직 선택 안함
 					mav.addObject("selectCon",selectCon);
+					getFieldList();
 					view="selectConcern";
 				
 				}
