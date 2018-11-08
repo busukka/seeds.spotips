@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!-- 
+
+<!--
 1.parameterType에 1개의 Type만 올 수 있다.
 2.parameterType에 bean인 경우 #{필드명}
 3.resultType도 1개만 올 수 있는데 1개 이상의 레코드를 검색하는 경우도 bean타입만 명시하면 된다.
@@ -10,14 +11,46 @@
 	<!-- 일반 회원 전체의 닉네임과 아이디를 출력 -->
 <!--  parameterType="Member" 다음부터는 이렇게 쓰면됨(mybatis-config.xml(mybatis 공통 환경설정)에 설정했으니) -->
 	<!-- sql문의 중괄호 안은 소문자로 써야함 멤버빈의 필드명이기 때문에 -->
-<mapper namespace="com.seeds.spotips.dao.AdminDao">
 
-	<select id="loadGenList" resultType="gm">
-	SELECT GM_NAME, GM_ID FROM GEN_MEMBER
+<mapper namespace="com.seeds.spotips.dao.AdminDao">
+	
+	<select id="loadGenList" resultType="gm"> 
+	SELECT MB_NAME, MB_ID FROM GEN_MEMBER
 	</select>
 	
 	<select id="mgidCheck" parameterType="String" resultType="String">
-	SELECT MG_ID FROM MANAGER WHERE MG_ID=#{mg_id}
+	SELECT MB_ID FROM MANAGER WHERE MB_ID=#{mb_id}
 	</select>
 	
+	<select id="loadBusList" resultType="bm">
+	SELECT MB_NAME, MB_ID FROM BUS_MEMBER
+	</select>
+
+	<select id="businessNameSearch" parameterType="String" resultType="bm">
+	SELECT MB_NAME, MB_ID FROM BUS_MEMBER 
+	WHERE MB_NAME LIKE '%'||#{key}||'%'
+	</select>
+	
+	<select id="businessIdSearch" parameterType="String" resultType="bm">
+	SELECT MB_NAME, MB_ID FROM BUS_MEMBER 
+	WHERE MB_ID LIKE '%'||#{key}||'%'
+	</select>
+	
+	<select id="generalNameSearch" parameterType="String" resultType="gm">
+	SELECT MB_NAME, MB_ID FROM GEN_MEMBER 
+	WHERE MB_NAME LIKE '%'||#{key}||'%'
+	</select>
+	
+	<select id="generalIdSearch" parameterType="String" resultType="gm">
+	SELECT MB_NAME, MB_ID FROM GEN_MEMBER 
+	WHERE MB_ID LIKE '%'||#{key}||'%'
+	</select>
+
+	<select id="goConcernPg" resultType="fl"> 
+	SELECT * FROM FIELD_LIST
+	</select>
+	
+	
 </mapper>
+
+<!-- resultType="java.util.HashMap"> -->
