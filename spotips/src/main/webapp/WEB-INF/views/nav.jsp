@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>nav.jsp</title>
 <meta charset="UTF-8">
 <style type="text/css">
 /* 기본 설정*/
@@ -31,12 +32,16 @@ nav ul li:first-child {
 	border-left: none;
 } /* 메뉴 분류중 제일 왼쪽의 "|"는 삭제*/
 </style>
-<title>nav.jsp</title>
+
 </head>
 <body>
+<!-- <link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.css" >
+<link rel="stylesheet" href="/resources/bootstrap/css/bootstrap-theme.css" >
+<script src="/resources/bootstrap/js/bootstrap.min.js"></script> -->
+
 	<!-- 로고, 프로필사진, 이름, 알림, 친구추천, 채팅, 개인정보수정 -->
 	<nav class="nav">
-		<img src="upload/Spotips_Logo.png" />
+		<img src="/resource/images/upload/Spotips_Logo.png" />
 		<!-- 로고 -->
 		<ul>
 			<li><a href="wow.jsp"><img src="관리자프로필사진" />이름</a></li>
@@ -49,6 +54,5 @@ nav ul li:first-child {
 			<li><a href="wow.jsp">개인정보수정</a></li>
 		</ul>
 	</nav>
-
 </body>
 </html>

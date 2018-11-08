@@ -33,6 +33,6 @@ public class Manager { //관리자계정
 	public void setMb_name(String mb_name) {
 		this.mb_name = mb_name;
 	}
+	}
 	
 	
-}

@@ -90,4 +90,6 @@ public class GenMember {
 		this.mb_selectconcern = mb_selectconcern;
 	}
 	
+	
+	
 }

@@ -3,7 +3,7 @@ package com.seeds.spotips.bean;
 import org.apache.ibatis.type.Alias;
 
 @Alias("fl")
-public class FieldList {
+public class FieldList { //분야리스트 (관심)
 	private int fl_no; //분야번호
 	private String fl_name; //분야명
 	private String fl_imgsysname; //분야이미지

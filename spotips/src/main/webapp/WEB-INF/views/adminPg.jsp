@@ -21,11 +21,11 @@
 			<div>
 				<ul>
 					<li>목록</li> <!-- 경로 잡리스트 기능이름으로 바꿔주기 -->
-					<li><a href="loadGenList">일반회원관리</a></li> <!-- 하는중 // (일반회원 조회(검색) 해야 함!!!! -->
+					<li><a href="loadGenList">일반회원관리</a></li>
 					<!-- ajax -->
-					<li><a href="busManagementPg">기업회원관리</a></li>
+					<li><a href="loadBusList">기업회원관리</a></li>
 					<!-- ajax -->
-					<li><a href="adminConcernPg">관심분야관리</a></li>
+					<li><a href="goConcernPg">관심분야관리</a></li>
 					<!-- ajax -->
 					<li><a href="genBlackListPg">일반회원 블랙리스트 관리</a></li>
 					<!-- ajax -->
