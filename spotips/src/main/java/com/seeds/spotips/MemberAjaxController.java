@@ -1,7 +1,6 @@
 package com.seeds.spotips;
 
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,5 +31,23 @@ public class MemberAjaxController {
 		System.out.println("name="+name);
 		boolean nameCheck=mm.nameCheck(name);
 		return nameCheck;
+	}
+	
+	@RequestMapping(value="/certNoCheck")
+	@ResponseBody
+	private boolean certNoCheck(HttpSession session, int certNo) {
+		System.out.println("certNo="+certNo);
+		boolean certNoCheck = mm.certNoCheck(certNo);
+		return certNoCheck;
+		
+	}
+	
+	@RequestMapping(value = "/mailBusnoCheck",produces="application/json; charset=utf-8" )
+	private @ResponseBody String mailBusnoCheck(String mail,String busno) {
+		System.out.println("mail="+mail);
+		System.out.println("busno="+busno);
+		String json=mm.mailBusnoCheck(mail,busno);
+		
+		return json;
 	}
 }

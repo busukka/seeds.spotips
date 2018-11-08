@@ -39,7 +39,7 @@ border-collapse: collapse;
 		
 		<tr>
 			<td width="100">ID </td>
-			<td><input type="text" name="gm_id" id="mb_id"/></td>
+			<td><input type="text" name="mb_id" id="mb_id"/></td>
 			<td><input type="button" value="중복체크" onclick="mailCheck()" 
 			onMouseOver="this.style.backgroundColor='red'"
 		onMouseOut="this.style.backgroundColor='white'"/></td>
@@ -50,7 +50,9 @@ border-collapse: collapse;
 		</tr>
 		
 		<tr id="inputCertNo">
-			<td align="center" colspan="2"><input type="text" id="certNo" placeholder="인증번호 입력란"/></td>
+			<td align="center" colspan="2">
+			<input type="text" id="certNo" placeholder="인증번호 입력란"/>
+			</td>
 			<td><input type="button" value="인증완료" onclick=" certNoCheck()" 
 			onMouseOver="this.style.backgroundColor='purple'"
 		onMouseOut="this.style.backgroundColor='white'"/></td>
@@ -58,27 +60,27 @@ border-collapse: collapse;
 		
 		<tr>
 			<td width="100">PW </td>
-			<td><input type="password" name="gm_pw"/></td>
+			<td><input type="password" name="mb_pw"/></td>
 		</tr>
 		
 		<tr>
 			<td width="100">Name </td>
-			<td><input type="text" name="gm_name" id="mb_name" placeholder="(대소문자 구분)"/></td>
+			<td><input type="text" name="mb_name" id="mb_name" placeholder="(대소문자 구분)"/></td>
 			<td><input type="button" value="중복체크" onclick="nameCheck()" 
 			onMouseOver="this.style.backgroundColor='red'"
-			onMouseOut="this.style.backgroundColor='white'" /></td>
+		onMouseOut="this.style.backgroundColor='white'" /></td>
 		</tr>
 		
 		<tr>
 			<td width="100">Birth </td>
-			<td><input type="text" name="gm_birth"/></td>
+			<td><input type="text" name="mb_birth"/></td>
 		</tr>
 		
 		<tr>
 			<td width="100">Gender </td>
 			<td>
-			남<input type="radio" name="gm_gender" value="남자" checked/>
-			여<input type="radio" name="gm_gender" value="여자"/>
+			남<input type="radio" name="mb_gender" value="남자" checked/>
+			여<input type="radio" name="mb_gender" value="여자"/>
 			</td>
 		</tr>
 		<tr>
@@ -178,7 +180,7 @@ function mailCheck() {
 			console.log(status)
 			console.log(xhr)
 			
-			 if(data.mailCheckNo==2){
+			 if(data.mailSerialNo>=1){
 				alert('중복!');
 				$('#sendCertificationNo').removeClass('open');
 				$('#mb_id').focus();
@@ -205,7 +207,7 @@ function sendCerMail() {
 
 	$.ajax({
 		type : 'post',
-		url : 'sendCertMail',
+		url : 'mail/sendCertMail',
 		data : {mail:mail},
 		dataType : 'JSON',
 		success: function(data,status,xhr){
@@ -234,7 +236,7 @@ function certNoCheck() {
 	console.log(certNo);
 	$.ajax({
 		type : 'post',
-		url : 'certNoCheck',
+		url : 'ajax/certNoCheck',
 		data : {certNo:certNo},
 		dataType : 'JSON',
 		success: function(data,status,xhr){
@@ -244,7 +246,6 @@ function certNoCheck() {
 			if(data){ //session영역상태 : setAttribute("certStatus", true)
 			alert('인증이가 완료.');
 			$('#inputCertNo').removeClass('open');
-			$('#sendCertificationNo').removeClass('open');
 			}else{
 				alert('인증번호가 틀렸습니다.')
 				$('#certNo').focus();

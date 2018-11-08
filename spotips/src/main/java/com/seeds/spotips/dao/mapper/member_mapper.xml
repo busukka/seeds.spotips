@@ -19,24 +19,24 @@
 	
 	<select id="getSerial"      
 	parameterType="String" resultType="Integer"> 
-	SELECT MB_SERIAL FROM VIEW_MBLOGIN WHERE MB_ID=#{mb_id}   
+	SELECT MB_SERIAL FROM VIEW_MBLOGIN WHERE MB_ID=#{mb_id} AND ROWNUM=1
 	</select> 
 	
 	<select id="mailCheck"
 	parameterType="String" resultType="String">
-	SELECT MB_ID FROM VIEW_MBLOGIN WHERE MB_ID=#{mail}
+	SELECT MB_SERIAL FROM VIEW_MBLOGIN WHERE MB_ID=#{mail}
 	
 	</select>
 	
 	<select id="nameCheck"
 	parameterType="String" resultType="String">
-	SELECT MB_NAME FROM VIEW_MBLOGIN WHERE MB_NAME=#{name}
+	SELECT MB_NAME FROM VIEW_MBLOGIN WHERE MB_NAME=#{name} AND ROWNUM=1
 	</select>
 	
 	<insert id="insertGm"
 	parameterType="gm">
-	INSERT INTO GM VALUES(DEFAULT,#{gm_id},#{gm_name},#{gm_pw},
-	#{gm_birth},#{gm_gender},DEFAULT,'안녕하세요',DEFAULT,DEFAULT,DEFAULT,DEFAULT)
+	INSERT INTO GM VALUES(DEFAULT,#{mb_id},#{mb_name},#{mb_pw},
+	#{mb_birth},#{mb_gender},DEFAULT,'안녕하세요',DEFAULT,DEFAULT,DEFAULT,DEFAULT)
 	</insert>
 	
 	<!-- Insert일반회원주소 -->
@@ -44,4 +44,88 @@
 	parameterType="ma">
 	INSERT INTO MA VALUES(#{ma_gmid},#{ma_addr})
 	</insert>
+	
+	<!-- 기업회원 회원가입페이지이동시 분야리스트가져오기 -->
+	<select id="getFieldList"
+	resultType="fl">
+	SELECT * FROM FL
+	</select>
+	
+	<!-- insert기업회원 -->
+	<insert id="insertBm" parameterType="bm">
+		INSERT INTO BM VALUES(DEFAULT,#{mb_id},#{mb_name},#{mb_pw},#{mb_busform},#{mb_busno},#{mb_busrepre},#{mb_bustel},#{mb_addr},DEFAULT,'안녕하세요',DEFAULT,DEFAULT,DEFAULT,DEFAULT)
+	</insert>
+	
+	<insert id="insertFp" parameterType="java.util.List">
+		 INSERT ALL
+    <foreach collection="list" item="item" separator=" " >
+     INTO FP
+     VALUES(#{item.fp_mbid}, ${item.fp_flno})
+    </foreach>
+   SELECT * FROM DUAL
+	</insert>
+	
+	<insert id="insertFc" parameterType="java.util.List">
+		 INSERT ALL
+    <foreach collection="list" item="item" separator=" " >
+     	INTO FC
+     	VALUES(#{item.fc_mbid}, ${item.fc_flno})
+    </foreach>
+   		SELECT * FROM DUAL
+	
+	</insert>
+	
+	<insert id="insertBusFc" parameterType="java.util.List">
+			INSERT ALL
+    	<foreach collection="list" item="item" separator=" " >
+     		INTO FC
+     		VALUES(#{item.fc_mbid}, ${item.fc_flno})
+   		</foreach>
+   			SELECT * FROM DUAL
+	</insert>
+
+	<update id="updateGenPw" parameterType="Map">
+		UPDATE GM SET MB_PW=#{pw}
+		WHERE MB_ID=#{mail}
+	</update>
+	
+	<select id="busnoCheck" 
+	parameterType="String"
+	resultType="bm">
+		SELECT MB_BUSNO,MB_SERIAL FROM BM WHERE MB_ID=#{mail} AND ROWNUM=1
+	</select>
+	
+	<update id="updateBusPw" 
+	parameterType="Map">
+		UPDATE BM SET MB_PW=#{pw}
+		WHERE MB_ID=#{mail}
+	</update>
+	
+	<delete id="deleteGm" 
+	parameterType="gm">
+	DELETE FROM GM WHERE MB_ID=#{mb_id}
+	</delete>
+	
+	<delete id="deleteAddr" 
+	parameterType="ma">
+	DELETE FROM MA WHERE MA_GMID=#{ma_gmid}
+	</delete>
+	<delete id="deleteBm" parameterType="bm"> 
+	DELETE FROM BM WHERE MB_ID=#{mb_id}
+	</delete>
+	
+	<update id="updGenSeletCon" 
+	parameterType="String">
+		UPDATE GM SET MB_SELECTCONCERN=1 WHERE MB_ID=#{mail}
+	</update>
+	
+	<update id="updBusSelectCon" 
+	parameterType="String">
+		UPDATE BM SET MB_SELECTCONCERN=1 WHERE MB_ID=#{mail}
+	</update>
+	
+	<select id="getSelcetCon" 
+	parameterType="String" resultType="Integer">
+		SELECT MB_SELECTCONCERN FROM V_MB WHERE MB_ID=#{mail}
+	</select>
 </mapper>

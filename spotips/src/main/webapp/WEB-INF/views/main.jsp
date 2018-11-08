@@ -5,12 +5,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<style>
 
+</style>
 
 
 </head>
 <body>
 <h1>main.jsp</h1>
 <h2>${id} ${serial}</h2>
+
 </body>
 </html>

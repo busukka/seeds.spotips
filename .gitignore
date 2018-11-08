@@ -2,6 +2,8 @@
 /.recommenders/
 /Servers/
 */target/
+/bootstrap-4.1.3-dist/
+/*.zip
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup

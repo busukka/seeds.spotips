@@ -3,9 +3,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
@@ -91,12 +93,6 @@
 		<beans:property name="sqlSessionFactory" ref="sqlSessionFactory" />
 		<beans:property name="mapperInterface"	value="com.seeds.spotips.dao.ImemberDao"/>
 	</beans:bean>
-
-
-	<!-- <beans:bean id="bDao" class="org.mybatis.spring.mapper.MapperFactoryBean"> 
-		<beans:property name="sqlSessionFactory" ref="sqlSessionFactory" /> 
-		<beans:property name="mapperInterface" value="com.board.zyz.dao.IBoardDao"/> 
-	</beans:bean> -->
 	
 	<!-- 파일첨부(Multipart Resolver) 설정:
 	form태그가 entype="multipart/form-data"인 경우
@@ -108,20 +104,23 @@
 		<beans:property name="maxUploadSize" value="10000000"/>10MB
 		<beans:property name="maxInMemorySize" value="10000000"/>10MB
 	</beans:bean> -->
+	<tx:annotation-driven/>
 	
 	<!-- id는 반드시 transactionManager라고 해야함 -->
+	
 	<beans:bean id="transactionManager"
 	class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  <!-- 트랜잭션 매니저가 스프링에서제공됨 -->
 		<beans:property name="dataSource" ref="dataSource"/>				<!-- ref=dataSource는 위의 db에 관련된 데이터 그걸 참조한다는것(내가 트랜잭션 걸 db)-->
 		
 	</beans:bean>
+	
+	
 	<!-- @Transactional 어노테이션 사용하기 위해 --><!-- 왼쪽에 쌍화살표가 생기면 제대로 트랜잭션 어노테이션 적용된다는것  -->
+	
 	<!-- <tx:annotation-driven transaction-manager="transactionManager"
 							proxy-target-class="false"/> -->
+							
 	<!-- transaction-manager="transactionManager"이 기본값 --><!-- proxy-target-class="false"도 생략하면 기본값으로 적용되니 안써도됨 -->		
-		
-	
-	
 	
 	
 	

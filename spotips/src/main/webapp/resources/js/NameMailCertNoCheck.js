@@ -15,7 +15,7 @@ function mailCheck() {
 			console.log(status)
 			console.log(xhr)
 			
-			 if(data.mailCheckNo==2){
+			 if(data.mailSerialNo>=1){
 				alert('중복!');
 				$('#sendCertificationNo').removeClass('open');
 				$('#mb_id').focus();
@@ -42,7 +42,7 @@ function sendCerMail() {
 
 	$.ajax({
 		type : 'post',
-		url : 'sendCertMail',
+		url : 'mail/sendCertMail',
 		data : {mail:mail},
 		dataType : 'JSON',
 		success: function(data,status,xhr){
@@ -71,7 +71,7 @@ function certNoCheck() {
 	console.log(certNo);
 	$.ajax({
 		type : 'post',
-		url : 'certNoCheck',
+		url : 'ajax/certNoCheck',
 		data : {certNo:certNo},
 		dataType : 'JSON',
 		success: function(data,status,xhr){

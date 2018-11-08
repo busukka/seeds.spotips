@@ -1,22 +1,18 @@
 package com.seeds.spotips;
 
-import java.util.ArrayList;
-
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.seeds.spotips.bean.AddrBean;
 import com.seeds.spotips.bean.GenMember;
-import com.seeds.spotips.bean.MbAddr;
 import com.seeds.spotips.service.MemberManagement;
 
 
@@ -37,7 +33,6 @@ public class MemberController {
 	public ModelAndView home() {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("loginPg");
-		
 		return mav;
 		
 	}
@@ -76,21 +71,11 @@ public class MemberController {
 	@RequestMapping("/joinBusPg")
 	public ModelAndView joinBusPg() {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("joinBusPg");
+		mav=mm.joinBusPg();
 		
 		return mav;
 		
 	}
-	
-	@RequestMapping(value="/certNoCheck")
-	@ResponseBody
-	private boolean certNoCheck(HttpSession session, int certNo) {
-		System.out.println("certNo="+certNo);
-		boolean certNoCheck = mm.certNoCheck(certNo);
-		return certNoCheck;
-		
-	}
-	
 	
 	
 	@RequestMapping("/googleLogin")
@@ -105,25 +90,35 @@ public class MemberController {
 	@RequestMapping("/insertGm")
 	public ModelAndView insertGm(AddrBean ab,GenMember gm) {
 		ModelAndView mav = new ModelAndView();
-		System.out.println("id="+gm.getGm_id());
+		System.out.println("id="+gm.getMb_id());
 		System.out.println("addr="+ab.getAddr1()+ab.getAddr2()+ab.getAddr3());
 		mav=mm.insertGm(gm,ab);
+		System.out.println(mav.getViewName());
 		return mav;
 		
 	}
-	@RequestMapping("/insertBm")
-	public ModelAndView insertBm() {
+	@RequestMapping(value="/insertBm", method = RequestMethod.POST)
+	public ModelAndView insertBm(HttpServletRequest request,AddrBean ab) {
+		ModelAndView mav = new ModelAndView();
+		//String[] arr= {"1","4"};//트랜잭션확인용
+		String[] arr=request.getParameterValues("fl_no");
+		//System.out.println(arr.length);
+		mav=mm.insertBm(arr,request,ab);
+		return mav;
+		
+	}
+	@RequestMapping(value="/busJoinSuccess", method = RequestMethod.GET)
+	public ModelAndView busJoinSuccess() {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("busJoinSuccess");
-		
 		return mav;
 		
 	}
+	
 	@RequestMapping("/remindGenPwPg")
 	public ModelAndView RemindGenPwPg() {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("remindGenPwPg");
-		
 		return mav;
 		
 	}
@@ -136,7 +131,14 @@ public class MemberController {
 		return mav;
 		
 	}
-	
+	@RequestMapping("/selectConcern")
+	public ModelAndView selectConcern(HttpServletRequest request) {
+		mav = new ModelAndView();
+		String[] arr = request.getParameterValues("fl_no");
+		mav=mm.selectConcern(arr);
+		return mav;
+		
+	}
 	
 	
 	

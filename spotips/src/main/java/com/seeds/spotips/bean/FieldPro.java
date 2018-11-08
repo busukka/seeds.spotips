@@ -1,5 +1,7 @@
 package com.seeds.spotips.bean;
 
+import java.util.List;
+
 import org.apache.ibatis.type.Alias;
 
 @Alias("fp")
