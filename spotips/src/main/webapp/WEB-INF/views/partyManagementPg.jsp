@@ -5,10 +5,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>모임 관리</title>
 </head>
 <body>
-<h1>아지ㄱ...</h1>
-<h1>${mb.gm_id}</h1>
-<a href="gogo">gogogo</a>
+
 </body>
 </html>

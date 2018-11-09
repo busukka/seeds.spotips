@@ -2,19 +2,11 @@
 <!-- Mybatis 공통적인 환경 설정 -->
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
-
+<!-- mapper.xml에 sql문 설정할때 parameterType="com.spotips.jeong.bean.Member" 
+	계속 쓰는게 길고 귀찮으니까 빈클래스의 닉네임을 설정 -->
 <configuration>
-	<!-- mapper.xml에 sql문 설정할때 parameterType="com.spotips.jeong.bean.Member" 계속 쓰는게 길고 귀찮으니까 빈클래스의 닉네임을 설정 -->
 	<typeAliases>
-	<!-- <typeAlias alias="member" type="com.spotips.jeong.bean.GenMember"/> -->
-	<!-- <typeAlias alias="board" type="com.spotips.jeong.bean.Board"/> -->
-	<package name="com.seeds.spotips.bean"/>
-	
+		<!-- <typeAlias alias="gm2" type="com.seeds.spotips.bean.GenMember" /> -->
+		<package name="com.seeds.spotips.bean"/>
 	</typeAliases>
-	
- 
-
-
-
-
 </configuration>

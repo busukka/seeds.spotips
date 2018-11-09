@@ -5,10 +5,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>showView.jsp</title>
 </head>
 <body>
-<h1>아지ㄱ...</h1>
-<h1>${mb.gm_id}</h1>
-<a href="gogo">gogogo</a>
+<nav>
+	<ul>
+		<li><a href="#">모임</a></li>
+		<li><a href="#">그룹</a></li>
+		<li><a href="#">광고</a></li>
+	</ul>
+</nav>
 </body>
 </html>
