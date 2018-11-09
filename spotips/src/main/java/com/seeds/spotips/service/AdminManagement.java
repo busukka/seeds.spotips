@@ -27,7 +27,7 @@ public class AdminManagement {
 	 */
 
 	private ModelAndView mav;
-
+							//idx loadGenList
 	public ModelAndView loadGenList() { // 일반회원관리 - 일반회원 전체조회
 		mav = new ModelAndView();
 		String view = null;
@@ -218,9 +218,9 @@ public class AdminManagement {
 		return sb.toString();
 	}
 
-	/*public ModelAndView concernInsert() { // 관심분야 추가
+	public ModelAndView concernInsert() { // 관심분야 추가
 		mav = new ModelAndView();
-		String view = null;
+	/*	String view = null;
 		// String mb_id = (String) session.getAttribute("id"); // ---일반회원 세션로그인 아직임..
 		String mb_id = "gustj@gmail.com"; // ******관리자 로그인 세션 확인 안돼서 임의로 설정!!!
 		String id = aDao.mgidCheck(mb_id); // 관리자 아이디를 들고 Dao로 가서 아이디 이메일 일치한 지 확인.
@@ -234,9 +234,9 @@ public class AdminManagement {
 		} else {
 			view = "loginPg";
 		}
-		mav.setViewName(view);
+		mav.setViewName(view);*/
 		return mav;
-	}*/
+	}
 
 	
 	

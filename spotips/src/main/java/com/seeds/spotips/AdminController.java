@@ -78,14 +78,21 @@ public class AdminController {
 		return mav;
 	}
 	
-	/*@ResponseBody
+	@ResponseBody
 	@RequestMapping("/concernInsert") //관심분야 추가
 	public ModelAndView concernInsert() {
 		ModelAndView mav = new ModelAndView();
 		mav=am.concernInsert();
 		return mav;
 	}
-	*/
+
+	@RequestMapping("/conChkForm") //관심분야 추가
+	public ModelAndView conChkForm() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("concernCheckForm.jsp");
+		return mav;
+	}
+	
 	@RequestMapping("/genBlackListSearch") //일반회원 블랙리스트 관리
 	public ModelAndView genBlackList() {
 		ModelAndView mav = new ModelAndView();
