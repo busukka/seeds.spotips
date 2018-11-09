@@ -30,21 +30,21 @@
 <body>
 <h1 align="center">remindBusPwPg.jsp </h1>
 	<div class="container bg-primary">
-		<input type="text" placeholder="회원 이메일을 입력하세요." id="mb_id" name="mb_id" class="bg-success text-white" />
+		<input type="email" placeholder="회원 이메일을 입력하세요." id="mb_id" name="mb_id" class="bg-success text-white" />
 		<input type="text" placeholder="사업자번호를 입력하세요." id="mb_busno" name="mb_busno" class="bg-success text-white">
 	</div>
 	<div class="container bg-primary">
-		<input type="button" value="이메일 인증하기" onclick="mailBusCheck()" 
+		<input id="btn1" type="button" value="이메일 인증하기" onclick="mailBusCheck()" 
 		class="bg-info"/>
 	</div>
 	<div class="container bg-primary" id="inputCertNo">
 		<input type="text" id="certNo" placeholder="인증번호 입력란">
-		<input type="button" value="인증완료" onclick="certNoCheck()" 
+		<input id="btn2" type="button" value="인증완료" onclick="certNoCheck()" 
 		class="bg-info"/>
 	</div>
 	
 	<div class="container bg-primary" id="sendPw">
-		<input class="bg-info" type="button" value="임시비밀번호발송" onclick="sendPw()"/>
+		<input id="btn3" class="bg-info" type="button" value="임시비밀번호발송" onclick="sendPw()"/>
 	</div>
 </body>
 <script>
@@ -78,9 +78,12 @@ $.ajax({
 					console.log(status)
 					console.log(xhr)
 					if(data){
-					alert('인증번호가'+mail+'로 발송되었습니다.');
 					$('#inputCertNo').css("display","block");
 					$('#mb_id').attr("readonly","readonly");
+					$('#mb_busno').attr("readonly","readonly");
+					$('#btn1').attr("value","이메일 다시 인증하기");
+					$('#sendPw').attr("display","none");
+					alert('인증번호가'+mail+'로 발송되었습니다.');
 					}else{
 						alert('메일전송실패')
 					}
@@ -119,7 +122,7 @@ function certNoCheck() {
 			if(data){ //session영역상태 : setAttribute("certStatus", true)
 			alert('인증이가 완료.');
 			$('#inputCertNo').css("display","none");
-			$('#sendPw').css("display","block");
+			$('#sendPw').css("display","block");s
 			}else{
 				alert('인증번호가 틀렸습니다.')
 				$('#certNo').focus();
@@ -145,8 +148,12 @@ function sendPw() {
 		dataType : 'JSON',
 		success: function(data,status,xhr){
 			console.log(data)
-			alert("임시비밀번호 발급이 완료되었습니다. 로그인해주세요.");
-			location.href = "/spotips/";
+			if(data){
+				alert("임시비밀번호 발급이 완료되었습니다. 로그인해주세요.");
+				location.href = "/spotips/";
+			}else{
+				alert("임시비밀번호 발급오류 관리자에게 연락바랍니다.");
+			}
 
 			
 		},
