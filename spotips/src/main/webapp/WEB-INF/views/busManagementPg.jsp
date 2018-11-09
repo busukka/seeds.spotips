@@ -17,12 +17,12 @@
 	<br>
 	<br>
 	<form action="" id="searchForm" >
-		<select name="SearchBmlist" id="SearchBmlist" >
+		<select name="SearchBmlist" id="SearchBmlist" > <!-- 입력한 값은 Management에서 SearchBmlist로 값을 가져온다. -->
 			<option id="bm_name" name="bm_name" selected>닉네임</option>
 			<option id="bm_id"  name="bm_id">이메일</option>
 		</select>
 		<input type="hidden" value="" id="hide" >
-		<input type="text"  name="key">
+		<input type="text"  name="key"> <!-- 입력한 값은 Management에서 key로 값을 가져간다. -->
 		<input type="button" value="검색" onclick="search()">
 	</form>
 	<br/>
@@ -58,5 +58,33 @@
 	}
 </script>
 </html>
-<!-- $("#formId").attr("action", "action.jsp"); -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
