@@ -5,7 +5,7 @@ import org.apache.ibatis.type.Alias;
 @Alias("r")
 public class Reply {
 	private String r_bno;// 게시물번호 
-	private int r_no;// 댓글번호
+	private double r_no;// 댓글번호
 	private String r_mbid; // 이메일
 	private String r_date; // 댓글날짜
 	private String r_content; // 내용
@@ -16,11 +16,11 @@ public class Reply {
 	public void setR_bno(String r_bno) {
 		this.r_bno = r_bno;
 	}
-	public int getR_no() {
+	public double getR_no() {
 		return r_no;
 	}
-	public void setR_no(int r_no) {
-		this.r_no = r_no;
+	public void setR_no(double r_no2) {
+		this.r_no = r_no2;
 	}
 	public String getR_mbid() {
 		return r_mbid;

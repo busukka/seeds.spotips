@@ -5,13 +5,25 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<style>
-</style>
+
+
+
 </head>
 
 <body>
 <h1>main.jsp</h1>
+
+
+
+
+
+
+
 <h2>${id} ${serial}</h2>
 
+
+<br />
+
+<a href="gopostUploadPg">게시판 페이지로 </a>
 </body>
 </html>
