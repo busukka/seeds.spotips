@@ -54,6 +54,10 @@ void updBusSelectCon(String mail);
 
 int getSelcetCon(String mail);
 
+GenMember SelectGm(String mb_id);
+
+BusMember SelectBm(String mb_id);
+
 
 
 

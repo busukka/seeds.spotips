@@ -128,4 +128,14 @@
 	parameterType="String" resultType="Integer">
 		SELECT MB_SELECTCONCERN FROM V_MB WHERE MB_ID=#{mail}
 	</select>
+	
+	<select id="SelectGm"
+	parameterType="String" resultType="gm">
+		SELECT MB_ID,MB_NAME,MB_IMGSYSNAME,MB_LIMIT FROM GM WHERE MB_ID=#{mb_id}
+	</select>
+	
+	<select id="SelectBm"
+	parameterType="String" resultType="bm">
+		SELECT MB_ID,MB_NAME,MB_IMGSYSNAME,MB_LIMIT FROM BM WHERE MB_ID=#{mb_id}
+	</select>
 </mapper>

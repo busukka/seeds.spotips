@@ -17,9 +17,9 @@ import com.seeds.spotips.service.MemberManagement;
 
 
 
-@Controller
-@SessionAttributes("mb")//모델객체 mb 만들면 request를 session처럼 사용//mav.addObject("mb",gm) 키값("mb")으로도되고 벨류(gm)도된다
-public class MemberController {
+	@Controller
+	/*@SessionAttributes("mb")*///모델객체 키값"mb"를 만들면 session이 죽을때까지 그 모델객체 mb의 라이프사이클이 유지된다
+	public class MemberController {
 	
 	@Autowired
 	private MemberManagement mm; 
@@ -44,7 +44,6 @@ public class MemberController {
 			@RequestParam("mb_pw") String mb_pw) {
 		ModelAndView mav = new ModelAndView();
 		mav=mm.loginAccess(mb_id,mb_pw);
-		System.out.println(session.getAttribute("id"));
 		
 		return mav;
 	}
@@ -132,7 +131,7 @@ public class MemberController {
 		return mav;
 		
 	}
-	@RequestMapping("/selectConcern")
+	@RequestMapping(value="/selectConcern",method = RequestMethod.POST)
 	public ModelAndView selectConcern(HttpServletRequest request) {
 		mav = new ModelAndView();
 		String[] arr = request.getParameterValues("fl_no");
