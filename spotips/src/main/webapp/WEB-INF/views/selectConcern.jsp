@@ -77,5 +77,10 @@
         </div>
     </div>
 
+
+<br/><br/><br/><br/><br/>
+<a href="gopostUploadPg">게시판</a>
+
+
 </body>
 </html>

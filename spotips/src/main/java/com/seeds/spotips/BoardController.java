@@ -54,12 +54,12 @@ public class BoardController {
 		mav.setViewName("boardPg");
 		return mav;
 	};
-	
-	@RequestMapping("/showPostDetailPg")
-	public ModelAndView postUpload(String b_no) {
-		mav=bm.showPostDetailPg(b_no);
+	@RequestMapping(value = "/postInfo")
+	public  ModelAndView postInfo(String b_no) {
+		mav=bm.postInfo(b_no);
 		return mav;
 	};
+	
 	
 	
 	

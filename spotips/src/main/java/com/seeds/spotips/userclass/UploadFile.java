@@ -34,12 +34,12 @@ public class UploadFile {
 		//1.이클립스의 물리적 저장경로 찾기
 		String root=multi.getSession().getServletContext().getRealPath("/");
 		System.out.println("root="+root);
-		String path=root+"resources/upload/";
+		String path="resources/upload/";
 		System.out.println("path="+path);
 		//2.폴더 생성을 꼭 할것...
-		File dir=new File(path);
+		File dir=new File(root+path);
 		if(!dir.isDirectory()){  //upload폴더 없다면
-			dir.mkdirs();  //upload폴더 생성
+			dir.mkdirs();  //upload폴더 생성 //mkdir 은 그 전 폴더 하나만 생성 mkdirs 는 하위 모든 폴더 생성
 		}
 		//3.파일을 가져오기-파일태그 이름들 반환
 		
@@ -72,7 +72,7 @@ public class UploadFile {
 			//5.메모리->실제 파일 업로드
 			
 			try {
-				mf.transferTo(new File(path+sysFileName));
+				mf.transferTo(new File(root+path+sysFileName));
 				f=bDao.fileUpload(fMap);
 			}catch (IOException e) {
 				e.printStackTrace();

@@ -2,18 +2,16 @@
 <!--board_mapper 또는 member_mapper.xml : 쿼리문-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!-- 
-1.parameterType에 1개의 Type만 올 수 있다.
-2.parameterType에 bean인 경우 #{필드명}
-3.resultType도 1개만 올 수 있는데 1개 이상의 레코드를 검색하는 경우도 bean타입만 명시하면 된다.
- -->
-<mapper namespace="com.seeds.spotips.dao.BoardDao">
 
-	<!-- id가 ImemberDao 클래스의 메소드이름과 일치해야함 -->
+<mapper namespace="com.seeds.spotips.dao.BoardDao">
+	
+	
+	<!-- 게시물 전체 보기 -->
 	<select id="getBoardList"  resultType="b"> 
 	SELECT * FROM B ORDER BY B_DATE DESC
 	</select>
 	
+	<!-- 게시물 올리기 셀렉트키는 게시물을 올리고 현재 올린 게시물의 번호를 넘기기위해 사용 -->
 	<insert id="postUpload" parameterType="b">
 		<selectKey keyProperty="b_no" resultType="String" order="AFTER">
 			SELECT 'B'||B_SEQ.CURRVAL FROM DUAL
@@ -22,15 +20,40 @@
 		VALUES('B'||B_SEQ.NEXTVAL,#{b_mbid},#{b_flno},#{b_content},DEFAULT,DEFAULT,DEFAULT)
 	</insert>
 	
-	
+	<!-- 게시물 올리기의 첨부파일 올리기 -->
 	<insert id="fileUpload" parameterType="HashMap">
 		INSERT INTO BU VALUES(#{b_no},#{sysFileName},#{oriFileName},#{path})   
 	</insert> 
 	
+	<!-- 게시물 전체보기의 첨부파일들 가져오기 -->
 	<select id="getBoardUploadList"  resultType="bu"> 
 	SELECT * FROM BU
 	</select>
 	
+	<!-- 게시물 상세보기 sql -->
+	<select id="postInfo" parameterType="String" resultType="b"> 
+	SELECT * FROM B WHERE B_NO=#{b_no}
+	</select>
+	
+	<!-- 게시물 상세보기의 첨부파일보기 sql -->
+	<select id="postFileInfo" parameterType="String" resultType="bu"> 
+	SELECT * FROM BU WHERE BU_CODE=#{b_no}
+	</select>
+	
+	<!-- 댓글 추가하기 -->
+	<insert id="replyInsert" parameterType="r">
+		INSERT INTO R VALUES(#{r_bno},#{r_no},#{r_mbid},DEFAULT,#{r_content})
+	</insert>
+	
+	<!-- 댓글 리스트 가져오기 -->
+	<select id="getReplyList" parameterType="String" resultType="r"> 
+	SELECT * FROM R WHERE R_BNO=#{r_bno}
+	</select>
+	
+	<select id="replyNoCheck" parameterType="String" resultType="r"> 
+	SELECT max(R_NO) AS R_NO FROM R WHERE R_BNO=#{b_no}
+	</select>
+
 </mapper>
 
 
