@@ -126,7 +126,7 @@
 	
 	<select id="getSelcetCon" 
 	parameterType="String" resultType="Integer">
-		SELECT MB_SELECTCONCERN FROM V_MB WHERE MB_ID=#{mail}
+		SELECT MB_SELECTCONCERN FROM V_CT WHERE MB_ID=#{mail}
 	</select>
 	
 	<select id="SelectGm"
