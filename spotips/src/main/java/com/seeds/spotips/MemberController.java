@@ -33,7 +33,6 @@ import com.seeds.spotips.service.MemberManagement;
 	public ModelAndView home() {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("loginPg");
-		
 		return mav;
 		
 	}

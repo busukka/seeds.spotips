@@ -49,6 +49,7 @@ public class MemberManagement {
 				session.setAttribute("id", mb_id);
 				session.setAttribute("serial", serial);
 				// 원래 였다면 리퀘스트 영역이나 세션영역에 저장했겠지만 세션을 DI컨테이너에 오토와이어한다.
+				if(serial!=4) {
 				int selectCon = mDao.getSelcetCon(mb_id);
 				System.out.println("selectCon="+selectCon);
 				if (selectCon == 1) { // 관심분야 선택 여부 1=선택함
@@ -69,6 +70,9 @@ public class MemberManagement {
 					getFieldList();
 					view = "selectConcern";
 
+				}
+				}else {
+					view = "main";
 				}
 			} else {
 				view = "loginPg";
