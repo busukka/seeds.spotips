@@ -55,12 +55,8 @@
 			type : 'post', //json으로 넘길땐 get은 안됨.
 			url : 'ajax/replyInsert',
 			data : obj,
-			success : function() {
-				alert('replyInsertOk');
-				 $("#replyList").html("${rList}");  
-				/* var data = JSON.parse(obj);
-				$("#replyList").html(data); */
-				/* $("#replyList").reload; */
+			success : function(data) {
+				 location.reload();
 			},
 			error : function(error) {
 				alert("error")

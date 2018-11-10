@@ -86,8 +86,8 @@ public class BoardManagement {
 					sb.append("</div></div>");
 				} // if end
 			} // for end
-			sb.append("		      </div>" + "		      <div id='footer'>" + "		        <a href='postInfo?b_no="
-					+ bList.get(i).getB_no() + "'>댓글</a><br/>" + "				<a href='likes?b_no="
+			sb.append("</div>" + "<div id='footer'>" + "		<a href='#' onclick=\"articleView('"
+					+ bList.get(i).getB_no() + "')\">댓글</a><br/>" + "				<a href='likes?b_no="
 					+ bList.get(i).getB_no() + "'>좋아요</a><br/>" + "				<a href='reportSend?b_no="
 					+ bList.get(i).getB_no() + "'>신고하기</a>" + "		      </div>" + "		    </div>");
 
@@ -203,8 +203,9 @@ public class BoardManagement {
 			List<Reply> rList=bDao.getReplyList(r.getR_bno());
 			mav.addObject("rList", makerList(rList));
 			view="postDetailPg";
-		}
+		}else {
 		view="main";
+		}
 		mav.setViewName(view);
 		return mav;
 	}

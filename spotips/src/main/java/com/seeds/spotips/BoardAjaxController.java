@@ -46,7 +46,7 @@ public class BoardAjaxController {
 	
 	@RequestMapping(value = "/replyInsert", produces = "application/json; charset=utf8")
 	public ModelAndView  replyInsert(Reply r) {
-		mav=bm.replyInsert(r); 
+		mav=bm.replyInsert(r);
 		return mav; //jackson Map-->json 변환해줌
 		//{'rList', rList}---->{"rList":[],[],[]...}
 	}

@@ -31,8 +31,7 @@ public class BoardController {
 	
 	
 	@RequestMapping("/getBoardList")
-	public ModelAndView home() {
-		System.out.println("컨트롤러 오케이");
+	public ModelAndView getBoardList() {
 		mav=bm.getBoardList();
 		return mav;
 	};
@@ -40,12 +39,6 @@ public class BoardController {
 	public ModelAndView gopostUploadPg() {
 		mav = new ModelAndView();
 		mav.setViewName("postUploadPg");
-		return mav;
-	};
-	@RequestMapping("/peed")
-	public ModelAndView peed() {
-		mav = new ModelAndView();
-		mav.setViewName("peed");
 		return mav;
 	};
 	@RequestMapping("/boardPg")
@@ -56,6 +49,7 @@ public class BoardController {
 	};
 	@RequestMapping(value = "/postInfo")
 	public  ModelAndView postInfo(String b_no) {
+		System.out.println("컨트롤러 접속");
 		mav=bm.postInfo(b_no);
 		return mav;
 	};
