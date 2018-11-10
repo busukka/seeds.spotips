@@ -27,7 +27,7 @@ public class AdminManagement {
 	 */
 
 	private ModelAndView mav;
-							//idx loadGenList
+							//idx-loadGenList
 	public ModelAndView loadGenList() { // 일반회원관리 - 일반회원 전체조회
 		mav = new ModelAndView();
 		String view = null;
@@ -54,6 +54,7 @@ public class AdminManagement {
 		return mav;
 	}
 
+						// index-makeGenHtml
 	private Object makeGenHtml(List<GenMember> gmlist) { // 일반회원관리 - 일반회원 전체조회 2
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < gmlist.size(); i++) {
