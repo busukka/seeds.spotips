@@ -12,6 +12,51 @@
 	align-content: center;
 
 }
+
+#articleView_layer {
+	display: none;
+	position: fixed;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%
+}
+
+#articleView_layer.open {
+	display: block;
+	color: red
+}
+
+#articleView_layer #bg_layer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	opacity: .5;
+	filter: alpha(opacity = 50);
+	z-index: 100
+}
+
+#contents_layer {
+	position: absolute;
+	top: 40%;
+	left: 40%;
+	width: 400px;
+	height: 400px;
+	margin: -150px 0 0 -194px;
+	padding: 28px 28px 0 28px;
+	border: 2px solid #555;
+	background: #fff;
+	font-size: 12px;
+	z-index: 200;
+	color: #767676;
+	line-height: normal;
+	white-space: normal;
+	overflow: scroll
+}
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -66,14 +111,18 @@
 	<%-- ${makeBList} --%>
 	</div>
 	
-	
+	<div align="center">${paging}</div>
+	<div id="articleView_layer">
+		<div id="bg_layer"></div>
+		<div id="contents_layer"></div>
+	</div>
 	
 	
 	
 </body>
 
 <script>
-$(document).ready(function() { 
+$(document).ready(function() {
 	$.ajax({
 		url: 'getBoardList',
 		type: 'POST',
@@ -88,6 +137,41 @@ $(document).ready(function() {
 		});  // ajax end
 
 });
+
+function articleView(b_no){
+	$('#articleView_layer').addClass('open');
+	$.ajax({
+		type:'get',
+		url:'postInfo',
+		data:{b_no:b_no},
+		dataType:'html',
+		success:function(data){
+			//alert(data);
+			$('#contents_layer').html(data); 
+		},
+		error:function(error){
+			alert('error');
+			console.log(error);
+		}
+	}); //ajax End
+}//function End
+
+
+//LightBox 해제
+var $layerWindow=$('#articleView_layer');
+$layerWindow.find('#bg_layer').on('mousedown',function(event){
+	console.log(event);
+	$layerWindow.removeClass('open');
+	return;
+});//on End
+$(document).keydown(function(event){
+	console.log(event);
+	if(event.keyCode!=27) return;
+	if($layerWindow.hasClass('open')){
+		$layerWindow.removeClass('open');
+	}
+});//keydown End
+
 
 
 
@@ -122,7 +206,7 @@ $(function(){ $("#btn").click(function(){
 			alert("error"); 
 			}
 		});  // ajax end
-	}); 
+	});
 	
 });
 
