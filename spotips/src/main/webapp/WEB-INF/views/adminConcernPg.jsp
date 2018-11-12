@@ -29,7 +29,7 @@
 		${flist }
 	</table>
 <!-- onclick="javascript:conInsert();passInsert(); -->
-	<input type="button" id="conInsert" value="관심분야 추가" "><br>
+	<input type="button" id="conInsert" value="관심분야 추가" ><br>
 	<!-- 관심분야 추가 버튼을 누르면 sucInsert()로 관심분야추가화면을 include 로딩한다 -->
 		<div id="showJsp" class="showJsp" style="display: none;"><!-- 버튼에 의해 숨김-보이기 -->
 			<jsp:include page="concernInsertPg.jsp"></jsp:include>
