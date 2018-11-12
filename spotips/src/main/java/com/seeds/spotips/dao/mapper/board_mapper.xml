@@ -54,6 +54,15 @@
 	SELECT max(R_NO) AS R_NO FROM R WHERE R_BNO=#{b_no}
 	</select>
 
+	<select id="getReplyCount" parameterType="String" resultType="int"> 
+	SELECT COUNT(R_NO) AS R_NO FROM R WHERE R_BNO=#{b_no}
+	</select>
+	
+	<select id="getLikesCount" parameterType="String" resultType="int"> 
+	SELECT COUNT(LK_ON) FROM LK WHERE LK_BNO=#{b_no}
+	</select>
+	
+	
 </mapper>
 
 

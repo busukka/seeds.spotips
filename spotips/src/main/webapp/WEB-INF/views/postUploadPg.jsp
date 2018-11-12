@@ -64,7 +64,7 @@
 </head>
 <body>	
 		<div id="postUploadDiv">
-	<form action="postUpload" name="puform" id="puform" method="post" enctype="multipart/form-data">
+	<form action="board/postUpload" name="puform" id="puform" method="post" enctype="multipart/form-data">
 		<table>
 			<tr align="center">
 				<td colspan="2"><h3>게시물 업로드</h3></td>
@@ -138,7 +138,7 @@ $(document).ready(function() {
 
 });
 
-function articleView(b_no){
+function postInfo(b_no){
 	$('#articleView_layer').addClass('open');
 	$.ajax({
 		type:'get',
@@ -160,8 +160,9 @@ function articleView(b_no){
 //LightBox 해제
 var $layerWindow=$('#articleView_layer');
 $layerWindow.find('#bg_layer').on('mousedown',function(event){
-	console.log(event);
 	$layerWindow.removeClass('open');
+	location.reload();
+	$(window).scrollTop(window.oriScroll);
 	return;
 });//on End
 $(document).keydown(function(event){
@@ -169,6 +170,7 @@ $(document).keydown(function(event){
 	if(event.keyCode!=27) return;
 	if($layerWindow.hasClass('open')){
 		$layerWindow.removeClass('open');
+		location.reroad();
 	}
 });//keydown End
 
@@ -219,7 +221,7 @@ $(function(){ $("#btn").click(function(){
 	
 function back(){
 		var form = $('#pufrom');
-		form.attr("action","getBoardList");
+		form.attr("action","gopostUploadPg");
 	}
 	
 

@@ -27,4 +27,9 @@ public interface BoardDao {
 
 	public Reply replyNoCheck(String b_no);
 
+	public int getReplyCount(String b_no);
+
+	public int getLikesCount(String b_no);
+
+
 }

@@ -32,6 +32,7 @@ public class BoardController {
 	
 	@RequestMapping("/getBoardList")
 	public ModelAndView getBoardList() {
+		mav = new ModelAndView();
 		mav=bm.getBoardList();
 		return mav;
 	};

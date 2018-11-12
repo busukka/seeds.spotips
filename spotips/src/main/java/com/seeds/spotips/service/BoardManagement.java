@@ -70,6 +70,8 @@ public class BoardManagement {
 	private Object makeBList(List<Board> bList, List<BoardUpload> buList) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < bList.size(); i++) {
+			int replyConunt=bDao.getReplyCount(bList.get(i).getB_no());
+			int likesConunt=bDao.getLikesCount(bList.get(i).getB_no());
 			sb.append("<div id='container'>" + "		      <div id='header'>" + "		        <h1>"
 					+ bList.get(i).getB_mbid() + "</h1>" + "					<h5 id='flno'>"
 					+ bList.get(i).getB_flno() + "</h5>" + "		      </div>"
@@ -86,9 +88,9 @@ public class BoardManagement {
 					sb.append("</div></div>");
 				} // if end
 			} // for end
-			sb.append("</div>" + "<div id='footer'>" + "		<a href='#' onclick=\"articleView('"
-					+ bList.get(i).getB_no() + "')\">댓글</a><br/>" + "				<a href='likes?b_no="
-					+ bList.get(i).getB_no() + "'>좋아요</a><br/>" + "				<a href='reportSend?b_no="
+			sb.append("</div>" + "<div id='footer'>" + "		<a href='#' onclick=\"postInfo('"
+					+ bList.get(i).getB_no() + "')\">댓글</a>+"+replyConunt+"<br/>" + "				<a href='likes?b_no="
+					+ bList.get(i).getB_no() + "'>좋아요</a>+"+likesConunt+"<br/>" + "				<a href='reportSend?b_no="
 					+ bList.get(i).getB_no() + "'>신고하기</a>" + "		      </div>" + "		    </div>");
 
 		}
@@ -157,7 +159,7 @@ public class BoardManagement {
 			System.out.println("post upload succes");
 			mav.addObject("b", post);
 			mav.addObject("bu", file);
-			mav.addObject("rList", makerList(rList));
+			mav.addObject("rList", rList);
 			view = "postDetailPg";
 		}
 
@@ -168,28 +170,15 @@ public class BoardManagement {
 	}
 
 	
-	private Object makerList(List<Reply> rList) {
-		StringBuilder sb = new StringBuilder();
-			for(int i=0;i<rList.size();i++) {
-				sb.append(" 아이디 : "+rList.get(i).getR_mbid()+"	");
-				sb.append(" 내용 : "+rList.get(i).getR_content()+"	");
-				sb.append(" 날짜 : "+rList.get(i).getR_date()+"	<br/>");
-				sb.append(" <a href='#'>답글달기</a> 	");
-				sb.append(" <a href='#'>신고하기</a>	<br/><hr>");
-			}
-			return sb.toString();
-	}
-
 	
-	
-	public ModelAndView replyInsert(Reply r) {
-		mav = new ModelAndView();
+	public Map<String, List<Reply>> replyInsert(Reply r) {
+		/*mav = new ModelAndView();
 		double r_no=1;
 		String view = null;
-		/*if(bDao.replyNoCheck(r.getR_bno())<=r_no) {
+		if(bDao.replyNoCheck(r.getR_bno())<=r_no) {
 			System.out.println("추가전rNo="+r_no);
 					r_no++;
-		}*/
+		}
 		Reply re=bDao.replyNoCheck(r.getR_bno());
 		if(re!=null) {
 			System.out.println("추가전rNo="+re.getR_no());
@@ -201,13 +190,36 @@ public class BoardManagement {
 		r.setR_mbid(session.getAttribute("id").toString());
 		if(bDao.replyInsert(r)) {
 			List<Reply> rList=bDao.getReplyList(r.getR_bno());
-			mav.addObject("rList", makerList(rList));
+			//mav.addObject("rList", makerList(rList));
+			mav.addObject("rList", rList);
 			view="postDetailPg";
 		}else {
 		view="main";
 		}
 		mav.setViewName(view);
 		return mav;
-	}
+		 */
+		double r_no=1;
+		System.out.println("들어왔음");
+		Map<String, List<Reply>> jMap=null;
+		Reply re=bDao.replyNoCheck(r.getR_bno());
+		if(re!=null) {
+			System.out.println("추가전rNo="+re.getR_no());
+					r_no=re.getR_no()+1;
+		}
+		System.out.println("추가후rNo="+r_no);
+		
+		r.setR_no(r_no);
+		r.setR_mbid(session.getAttribute("id").toString());
+		if(bDao.replyInsert(r)) {
+			List<Reply> rList=bDao.getReplyList(r.getR_bno());
+			jMap=new HashMap<String,List<Reply>>();
+			jMap.put("rList", rList);
+			System.out.println(jMap);
+		}else {
+			jMap=null;
+		}
+		return jMap;
+	}//replyInsert end
 
-}
+}//class end
