@@ -35,7 +35,7 @@
 					<!-- ajax -->
 					<li><a href="partyManagementPg">모임관리</a></li>
 					<!-- ajax -->
-					<li><a href="adminManagerPg">관리자계정관리</a></li>
+					<li><a href="adminMbManagerPg">관리자계정관리</a></li>
 					<li><a href="adminLogPg">관리자 로그보기</a></li>
 					
 				</ul>
