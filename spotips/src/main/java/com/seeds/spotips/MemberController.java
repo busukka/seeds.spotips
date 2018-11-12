@@ -1,5 +1,9 @@
 package com.seeds.spotips;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -13,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.seeds.spotips.bean.AddrBean;
 import com.seeds.spotips.bean.GenMember;
+import com.seeds.spotips.bean.Manager;
 import com.seeds.spotips.service.MemberManagement;
 
 
@@ -40,7 +45,7 @@ import com.seeds.spotips.service.MemberManagement;
 	@RequestMapping("/loginAccess")
 	public ModelAndView joinForm(
 			@RequestParam("mb_id") String mb_id,
-			@RequestParam("mb_pw") String mb_pw) {
+			@RequestParam("mb_pw") String mb_pw) throws NoSuchAlgorithmException, UnsupportedEncodingException, GeneralSecurityException {
 		ModelAndView mav = new ModelAndView();
 		mav=mm.loginAccess(mb_id,mb_pw);
 		
@@ -106,13 +111,6 @@ import com.seeds.spotips.service.MemberManagement;
 		return mav;
 		
 	}
-	@RequestMapping(value="/busJoinSuccess", method = RequestMethod.GET)
-	public ModelAndView busJoinSuccess() {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("busJoinSuccess");
-		return mav;
-		
-	}
 	
 	@RequestMapping("/remindGenPwPg")
 	public ModelAndView RemindGenPwPg() {
@@ -139,7 +137,20 @@ import com.seeds.spotips.service.MemberManagement;
 		
 	}
 	
-	
+	@RequestMapping(value="/adminMbManagerPg",method = RequestMethod.GET)
+	public ModelAndView adminMbManagerPg(HttpServletRequest request) throws UnsupportedEncodingException, NoSuchAlgorithmException, GeneralSecurityException {
+		mav = new ModelAndView();
+		mav=mm.adminMbManagerPg();
+		return mav;
+		
+	}
+	@RequestMapping(value="/insertMg",method = RequestMethod.POST)
+	public ModelAndView inserMg(Manager mg) throws UnsupportedEncodingException, NoSuchAlgorithmException, GeneralSecurityException {
+		mav = new ModelAndView();
+		mav = mm.insertMg(mg);
+		return mav;
+		
+	}
 	
 	
 }

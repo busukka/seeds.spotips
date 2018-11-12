@@ -2,12 +2,14 @@ package com.seeds.spotips.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.seeds.spotips.bean.BusMember;
 import com.seeds.spotips.bean.FieldConcern;
 import com.seeds.spotips.bean.FieldList;
 import com.seeds.spotips.bean.FieldPro;
 import com.seeds.spotips.bean.GenMember;
+import com.seeds.spotips.bean.Manager;
 import com.seeds.spotips.bean.MbAddr;
 
 public interface ImemberDao {
@@ -57,6 +59,10 @@ int getSelcetCon(String mail);
 GenMember SelectGm(String mb_id);
 
 BusMember SelectBm(String mb_id);
+
+boolean insertMg(Manager mg);
+
+ArrayList<Manager> getMgList();
 
 
 

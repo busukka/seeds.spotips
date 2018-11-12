@@ -50,4 +50,13 @@ public class MemberAjaxController {
 		
 		return json;
 	}
+	
+	@RequestMapping(value = "/mgInsertForm")
+	public ModelAndView mgInsertForm() {
+		mav = new ModelAndView();
+		mav.setViewName("mgInsertForm");
+		return mav;
+	}
+	
+	
 }

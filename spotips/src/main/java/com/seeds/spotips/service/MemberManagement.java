@@ -1,7 +1,11 @@
 package com.seeds.spotips.service;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,8 +22,10 @@ import com.seeds.spotips.bean.FieldConcern;
 import com.seeds.spotips.bean.FieldList;
 import com.seeds.spotips.bean.FieldPro;
 import com.seeds.spotips.bean.GenMember;
+import com.seeds.spotips.bean.Manager;
 import com.seeds.spotips.bean.MbAddr;
 import com.seeds.spotips.dao.ImemberDao;
+import com.seeds.spotips.userclass.AES256Util;
 
 @Service
 public class MemberManagement {
@@ -31,12 +37,13 @@ public class MemberManagement {
 	private ModelAndView mav;
 	
 						/*[ idx-loginAccess ]*/
-	public ModelAndView loginAccess(String mb_id, String mb_pw) {
+	public ModelAndView loginAccess(String mb_id, String mb_pw) throws NoSuchAlgorithmException, UnsupportedEncodingException, GeneralSecurityException {
 
 		mav = new ModelAndView();
 		String view = null;
 		BusMember bm = new BusMember();
 		GenMember gm = new GenMember();
+		AES256Util aes = new AES256Util("MgInsertSecurity");
 		// 암호화된 비번으로 계정 로그인할때
 		BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
 		String pwEncode = mDao.getSecurityPw(mb_id);
@@ -79,8 +86,31 @@ public class MemberManagement {
 				mav.addObject("loginCheck", 1);// 1= alert("비밀번호가 일치하지 않습니다.");
 			}
 		} else {
-			view = "loginPg";
-			mav.addObject("loginCheck", 2);// 2= alert("가입되지 않은 이메일입니다.");
+			ArrayList<Manager> mgList= mDao.getMgList();
+			int serial=0;
+			for(int i=0;i<mgList.size();i++) {
+				if(aes.decrypt(mgList.get(i).getMb_id()).equals(mb_id)) {
+					pwEncode = mgList.get(i).getMb_pw();
+					serial=mgList.get(i).getMb_serial();
+					break;
+				}
+			}
+			if(pwEncode!=null) {
+				if(pwEncoder.matches(mb_pw, pwEncode)) {
+					session.setAttribute("id", mb_id);
+					session.setAttribute("serial", serial);
+					view = "main";
+				}else {
+					view = "loginPg";
+					mav.addObject("loginCheck", 1);// 1= alert("비밀번호가 일치하지 않습니다.");
+					
+				}
+				
+			}else {
+				view = "loginPg";
+				mav.addObject("loginCheck", 2);// 2= alert("가입되지 않은 이메일입니다.");
+			}
+			
 		}
 		mav.setViewName(view);
 
@@ -357,6 +387,7 @@ public class MemberManagement {
 					/*[ idx-selectConcern ]*/
 	
 	public ModelAndView selectConcern(String[] arr) {
+		mav = new ModelAndView();
 		FieldConcern fc;
 		String view = null;
 		String id = null;
@@ -461,6 +492,55 @@ public class MemberManagement {
 		System.out.println("json=" + json);
 
 		return json;
+	}
+	
+				// idx-insertMg
+	public ModelAndView insertMg(Manager mg) throws UnsupportedEncodingException, NoSuchAlgorithmException, GeneralSecurityException {
+		mav = new ModelAndView();
+		String view = null;
+		String id = null;
+		BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
+		AES256Util AES256 = new AES256Util("MgInsertSecurity");
+		id=AES256.encrypt(mg.getMb_id());
+		mg.setMb_id(id);
+		System.out.println("AES256암호화:"+id);
+		mg.setMb_pw(pwEncoder.encode(mg.getMb_pw()));
+		boolean insertCheck = mDao.insertMg(mg);
+		if(insertCheck) {
+			mav.addObject("insertCheck",insertCheck);
+			mav.setViewName("adminMbManagerPg");
+		}else {
+			mav.addObject("insertCheck",insertCheck);
+			mav.setViewName("#");
+		}
+		
+		return mav;
+	}
+	
+	public ModelAndView adminMbManagerPg() throws UnsupportedEncodingException, NoSuchAlgorithmException, GeneralSecurityException {
+		AES256Util aes = new AES256Util("MgInsertSecurity");
+		ArrayList<Manager> mgList = new ArrayList<>();
+		String view = null;
+		mgList=mDao.getMgList();
+		for(int i=0;i<mgList.size();i++) {
+			String id = aes.decrypt(mgList.get(i).getMb_id());
+			mgList.get(i).setMb_id(id);
+			System.out.println("관리자계정관리페이지에 뿌릴 복호화아이디:"+id);
+		}
+		view= "adminMbManagerPg";
+		String mgListHTML=makeMgListHTML(mgList);
+		mav.addObject("mgListHTML",mgListHTML);
+		mav.setViewName(view);
+		return mav;
+	}
+	private String makeMgListHTML(ArrayList<Manager> mgList) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<ul>");
+		for(int i=0;i<mgList.size();i++) {
+			sb.append("<li>"+mgList.get(i).getMb_id()+"</li>");
+		}
+		sb.append("</ul>");
+		return sb.toString();
 	}
 
 }
