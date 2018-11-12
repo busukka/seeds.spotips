@@ -507,8 +507,8 @@ public class MemberManagement {
 		mg.setMb_pw(pwEncoder.encode(mg.getMb_pw()));
 		boolean insertCheck = mDao.insertMg(mg);
 		if(insertCheck) {
+			mav=adminMbManagerPg();
 			mav.addObject("insertCheck",insertCheck);
-			mav.setViewName("adminMbManagerPg");
 		}else {
 			mav.addObject("insertCheck",insertCheck);
 			mav.setViewName("#");
