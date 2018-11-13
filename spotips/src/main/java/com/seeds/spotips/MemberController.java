@@ -37,7 +37,7 @@ import com.seeds.spotips.service.MemberManagement;
 	@RequestMapping("/")
 	public ModelAndView home() {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("loginPg");
+		mav.setViewName("index");
 		return mav;
 		
 	}
