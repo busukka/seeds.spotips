@@ -45,8 +45,13 @@
 		INSERT INTO R VALUES(#{r_bno},#{r_no},#{r_mbid},DEFAULT,#{r_content})
 	</insert>
 	
-	<!-- 댓글 리스트 가져오기 -->
+	<!-- 전체 게시물의 댓글 가져오기 -->
 	<select id="getReplyList" parameterType="String" resultType="r"> 
+	SELECT * FROM R
+	</select>
+	
+	<!-- 한게시물의 댓글 가져오기 -->
+	<select id="getReply" parameterType="String" resultType="r"> 
 	SELECT * FROM R WHERE R_BNO=#{r_bno}
 	</select>
 	
@@ -62,6 +67,9 @@
 	SELECT COUNT(LK_ON) FROM LK WHERE LK_BNO=#{b_no}
 	</select>
 	
+	<select id="getBoardUploadCount" parameterType="String" resultType="int"> 
+	SELECT COUNT(BU_FILESYS) AS BU_FILESYS FROM BU WHERE BU_CODE=#{b_no}
+	</select>
 	
 </mapper>
 

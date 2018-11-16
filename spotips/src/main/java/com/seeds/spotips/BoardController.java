@@ -55,7 +55,11 @@ public class BoardController {
 		return mav;
 	};
 	
-	
+	@RequestMapping(value = "/postUpload" , produces = "application/json; charset=utf8")
+	public  ModelAndView postUpload(MultipartHttpServletRequest multi) {
+		mav=bm.postUpload(multi);
+		return mav;
+	};
 	
 	
 }//class end

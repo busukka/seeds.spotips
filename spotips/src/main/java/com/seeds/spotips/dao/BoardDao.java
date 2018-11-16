@@ -23,13 +23,17 @@ public interface BoardDao {
 
 	public boolean replyInsert(Reply r);
 
-	public List<Reply> getReplyList(String r_bno);
+	public List<Reply> getReply(String r_bno);
 
 	public Reply replyNoCheck(String b_no);
 
 	public int getReplyCount(String b_no);
 
 	public int getLikesCount(String b_no);
+
+	public int getBoardUploadCount(String b_no);
+
+	public List<Reply> getReplyList();
 
 
 }

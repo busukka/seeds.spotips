@@ -33,17 +33,13 @@ public class BoardAjaxController {
 		out.print(json);
 	}*/
 	
-	@RequestMapping(value = "/postUpload" , produces = "application/json; charset=utf8")
-	public  ModelAndView postUpload(MultipartHttpServletRequest multi) {
-		mav=bm.postUpload(multi);
-		return mav;
-	};
+	
 	/*@RequestMapping(value = "/postInfo")
 	public  ModelAndView postInfo(String b_no) {
 		mav=bm.postInfo(b_no);
 		return mav;
 	};*/
-	
+		/*idx - replyInsert(Reply r)*/
 	@RequestMapping(value = "/replyInsert", produces = "application/json; charset=utf8")
 	public @ResponseBody Map<String, List<Reply>>  replyInsert(Reply r) {
 		//mav=bm.replyInsert(r);

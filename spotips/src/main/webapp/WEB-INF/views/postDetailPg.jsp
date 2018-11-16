@@ -52,8 +52,8 @@
 </body>
 
 <!-- <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
-<!-- <script src="resources/js/jquery.serializeObject.js"></script> -->
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="resources/js/jquery.serializeObject.js"></script> -->
 <script>
 	function replyInsert(bno) {
 		var obj = $('#rForm').serializeObject(); //{속성:값,속성:값}

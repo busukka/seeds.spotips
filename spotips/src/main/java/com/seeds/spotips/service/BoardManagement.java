@@ -44,6 +44,7 @@ public class BoardManagement {
 	@Autowired
 	private UploadFile upload;
 
+		/*idx-getBoardList*/
 	public ModelAndView getBoardList() {
 
 		mav = new ModelAndView();
@@ -55,8 +56,12 @@ public class BoardManagement {
 		if (id != null) {
 			List<Board> bList = bDao.getBoardList();
 			List<BoardUpload> buList = bDao.getBoardUploadList();
-			mav.addObject("makeBList", makeBList(bList, buList));
-			view = "boardPg";
+			List<Reply> rList=bDao.getReplyList();
+			//mav.addObject("makeBList", makeBList(bList, buList));
+			mav.addObject("blist",bList);
+			mav.addObject("bulist",buList);
+			mav.addObject("rlist",rList);
+			view = "postUploadPg";
 		} else {
 			view = "main";
 		}
@@ -66,10 +71,10 @@ public class BoardManagement {
 		return mav;
 
 	}
-
+	/*idx-makeBList(List<Board> bList, List<BoardUpload> buList)*/
 	private Object makeBList(List<Board> bList, List<BoardUpload> buList) {
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < bList.size(); i++) {
+		/*for (int i = 0; i < bList.size(); i++) {
 			int replyConunt=bDao.getReplyCount(bList.get(i).getB_no());
 			int likesConunt=bDao.getLikesCount(bList.get(i).getB_no());
 			sb.append("<div id='container'>" + "		      <div id='header'>" + "		        <h1>"
@@ -93,12 +98,47 @@ public class BoardManagement {
 					+ bList.get(i).getB_no() + "'>좋아요</a>+"+likesConunt+"<br/>" + "				<a href='reportSend?b_no="
 					+ bList.get(i).getB_no() + "'>신고하기</a>" + "		      </div>" + "		    </div>");
 
+		}; // for end   */
+		
+		for (int i = 0; i < bList.size(); i++) {
+			int replyConunt=bDao.getReplyCount(bList.get(i).getB_no());
+			int likesConunt=bDao.getLikesCount(bList.get(i).getB_no());
+			boolean imgcheck = false;
+			sb.append("<div class='post-content'>");
+			
+			for (int j = 0; j < buList.size(); j++) {
+				if (bList.get(i).getB_no().equals(buList.get(j).getBu_code())) {
+					sb.append("<img style='max-height:50%; max-width:100%; margin-left: auto; margin-right: auto; display: block;'"
+							+ "src='"+ buList.get(j).getBu_path()+ buList.get(j).getBu_filesys() + "'>");
+				} // if end
+			} // for end
+			sb.append("              <div class='post-container' style='width:200px;'>" + 
+					"                <img src='http://placehold.it/300x300' alt='user' class='profile-photo-md pull-left' />" + 
+					"                <div class='post-detail'>" + 
+					"                  <div class='user-info'>" + 
+					"                    <h5><a href='timeline.html' class='profile-link'>"+ bList.get(i).getB_mbid() +"</a> <span class='following'>"+bList.get(i).getB_flno()+"</span></h5>" + 
+					"                    <p class='text-muted' style='text-align: right;'>"+ bList.get(i).getB_date()+"</p>" + 
+					"                  </div>" + 
+					"                  <div class='reaction'>" + 
+					"                  </div>" + 
+					"                  <div class='line-divider'></div>" + 
+					"                  <div class='post-text'>" + 
+					"                    <p>"+ bList.get(i).getB_content()+"</p>" + 
+					"                  </div>" + 
+					"                  <div class=\"line-divider\"><a href='#' onclick='postInfo('"+ bList.get(i).getB_no() + "')'>댓글</a>"+replyConunt+"</div>" + 
+					" 					<a class='btn text-green' href='likes?b_no="+bList.get(i).getB_no() +"'><i class='icon ion-thumbsup'></i>"+likesConunt+"</a>" + 
+					"                </div>" + 
+					"              </div>" + 
+					"            </div>");
+			
+			
+
 		}
 		; // for end
 		return sb.toString();
 	}
 
-	/* @Transactional */
+	/* @Transactional *//*idx-postUpload(MultipartHttpServletRequest multi)*/
 	public ModelAndView postUpload(MultipartHttpServletRequest multi) {
 
 		mav = new ModelAndView();
@@ -108,8 +148,6 @@ public class BoardManagement {
 		int b_flno = Integer.parseInt(multi.getParameter("b_flno"));
 		int b_openlv = Integer.parseInt(multi.getParameter("b_openlv"));
 		String b_content = multi.getParameter("b_content");
-		String bu_filesys = multi.getParameter("bu_files");
-		String bu_fileori = multi.getParameter("bu_files");
 		String id = session.getAttribute("id").toString();
 
 		// Board 빈에 데이터를 저장후 dao 로 이동
@@ -136,12 +174,7 @@ public class BoardManagement {
 		return mav;
 	}
 
-	public static String getUuid() {
-
-		return UUID.randomUUID().toString().replaceAll("-", "");
-
-	}
-
+	/*idx-postInfo(String b_no)*/
 	public ModelAndView postInfo(String b_no) {
 		mav = new ModelAndView();
 		String view = null;
@@ -154,7 +187,7 @@ public class BoardManagement {
 		System.out.println("post upload before");
 		Board post = bDao.postInfo(b_no);
 		List<BoardUpload> file = bDao.postFileInfo(b_no);
-		List<Reply> rList=bDao.getReplyList(b_no);
+		List<Reply> rList=bDao.getReply(b_no);
 		if (id != null && post != null) {
 			System.out.println("post upload succes");
 			mav.addObject("b", post);
@@ -170,7 +203,7 @@ public class BoardManagement {
 	}
 
 	
-	
+	/*idx-replyInsert(Reply r)*/
 	public Map<String, List<Reply>> replyInsert(Reply r) {
 		/*mav = new ModelAndView();
 		double r_no=1;
@@ -212,7 +245,7 @@ public class BoardManagement {
 		r.setR_no(r_no);
 		r.setR_mbid(session.getAttribute("id").toString());
 		if(bDao.replyInsert(r)) {
-			List<Reply> rList=bDao.getReplyList(r.getR_bno());
+			List<Reply> rList=bDao.getReply(r.getR_bno());
 			jMap=new HashMap<String,List<Reply>>();
 			jMap.put("rList", rList);
 			System.out.println(jMap);
