@@ -7,7 +7,7 @@ public class Party {
 	private String p_no; // 모임번호
 	private String p_leader; // 이메일<모임장>
 	private String p_name; // 모임명
-	private int p_flno; // 분야번호
+	private int fl_no; // 분야번호
 	private String p_date; // 게시일자
 	private String p_sdate; // 모임시작시간
 	private String p_edate; // 모임종료시간
