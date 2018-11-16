@@ -8,6 +8,7 @@ public class Manager { //관리자계정
 	private int mb_serial; //시리얼
 	private String mb_pw; //비밀번호
 	private String mb_name; //이름
+	private String mb_imgsysname;
 	
 	public String getMb_id() {
 		return mb_id;
@@ -32,6 +33,12 @@ public class Manager { //관리자계정
 	}
 	public void setMb_name(String mb_name) {
 		this.mb_name = mb_name;
+	}
+	public String getMb_imgsysname() {
+		return mb_imgsysname;
+	}
+	public void setMb_imgsysname(String mb_imgsysname) {
+		this.mb_imgsysname = mb_imgsysname;
 	}
 	}
 	

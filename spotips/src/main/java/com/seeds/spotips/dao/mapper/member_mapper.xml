@@ -140,7 +140,7 @@
 	</select>
 	
 	<insert id="insertMg" parameterType="mg">
-		INSERT INTO MG VALUES(#{mb_id},DEFAULT,#{mb_pw},#{mb_name})
+		INSERT INTO MG VALUES(#{mb_id},DEFAULT,#{mb_pw},#{mb_name},DEFAULT)
 	</insert>
 	
 	<select id="getMgList" resultType="mg">

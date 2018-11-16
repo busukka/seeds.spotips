@@ -94,7 +94,7 @@ ol, ul {
 				url : 'ajax/mgInsertForm',
 				dataType: "html",
 				success : function(data){
-					alert(data);
+					//alert(data);
 					console.log(data);
 					$('#insertForm_layer').html(data);
 					
@@ -109,6 +109,10 @@ ol, ul {
 		}else{
 			alert("관리자도 아니면서 어딜");
 		} 
+	}
+	
+	function back() {
+		$('#insertForm-Wrap_layer').removeClass('open');
 	}
 
 </script>

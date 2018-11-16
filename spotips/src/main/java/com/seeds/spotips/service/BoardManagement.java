@@ -55,7 +55,7 @@ public class BoardManagement {
 		if (id != null) {
 			List<Board> bList = bDao.getBoardList();
 			List<BoardUpload> buList = bDao.getBoardUploadList();
-			mav.addObject("makeBList", makeBList(bList, buList));
+			mav.addObject("makeBList", makeBList(bList, buList)); 
 			view = "boardPg";
 		} else {
 			view = "main";
@@ -74,8 +74,8 @@ public class BoardManagement {
 					+ bList.get(i).getB_mbid() + "</h1>" + "					<h5 id='flno'>"
 					+ bList.get(i).getB_flno() + "</h5>" + "		      </div>"
 					+ "				<div id='sideheader'>" + "		            <h3 id='date'>"
-					+ bList.get(i).getB_date() + "					</h3>" + "		        </div>"
 					+ "		      <div id='content'>" + "		        <h2>내용</h2><br/>" + bList.get(i).getB_content()
+					+ bList.get(i).getB_date() + "					</h3>" + "		        </div>"
 					+ "		       </div> " + "		      <div id='sidebar'> " + "		      <h2>첨부사진/동영상</h2>");
 			for (int j = 0; j < buList.size(); j++) {
 				if (bList.get(i).getB_no().equals(buList.get(j).getBu_code())) {

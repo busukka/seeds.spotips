@@ -28,7 +28,8 @@
 				<td><input type="text" name="mb_name"/></td>
 			</tr>
 			<tr>
-				<td colspan="2"><input type="submit" value="관리자 생성"/></td>
+				<td><input type="submit" value="관리자 생성"/></td>
+				<td><input type="button" value="나가기" onclick="back()" /></td>
 			</tr>
 		</table>
 	</form>		

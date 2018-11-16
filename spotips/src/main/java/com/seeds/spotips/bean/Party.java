@@ -7,7 +7,7 @@ public class Party {
 	private String p_no; // 모임번호
 	private String p_leader; // 이메일<모임장>
 	private String p_name; // 모임명
-	private int p_flno; // 분야번호
+	private int fl_no; // 분야번호
 	private String p_date; // 게시일자
 	private String p_sdate; // 모임시작시간
 	private String p_edate; // 모임종료시간
@@ -34,12 +34,6 @@ public class Party {
 	}
 	public void setP_name(String p_name) {
 		this.p_name = p_name;
-	}
-	public int getP_flno() {
-		return p_flno;
-	}
-	public void setP_flno(int p_flno) {
-		this.p_flno = p_flno;
 	}
 	public String getP_date() {
 		return p_date;
@@ -82,6 +76,12 @@ public class Party {
 	}
 	public void setP_content(String p_content) {
 		this.p_content = p_content;
+	}
+	public int getFl_no() {
+		return fl_no;
+	}
+	public void setFl_no(int fl_no) {
+		this.fl_no = fl_no;
 	}
 	
 	
