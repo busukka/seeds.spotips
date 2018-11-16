@@ -31,23 +31,31 @@
 	<form id="rForm" name='rForm'>
 		댓글달기
 		<textarea rows="3" cols="50" name="r_content" id="r_content"></textarea>
-		<input type="button" value="입력" id="btn" onclick="reply('${b.b_no}')"
+		<input type="button" value="입력" id="btn" onclick="replyInsert('${b .b_no}')"
 			style="width: 70px; height: 50px">
 		<%-- onclick="reply(${b.b_no})" --%>
 	</form>
 	<hr>
+	
 	<div id="replyList">
-		${rList}
+		<c:forEach var="r" items="${rList}">
+			아이디 : ${r.r_mbid}
+			내용 : ${r.r_content}
+			날짜 : ${r.r_date}	<br/>
+			<a href='#'>답글달기</a>
+			<a href='#'>신고하기</a>	<br/><hr>
+			
+		</c:forEach>
 	</div>
 
 
 </body>
 
-<script
+<!-- <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="resources/js/jquery.serializeObject.js"></script>
+<script src="resources/js/jquery.serializeObject.js"></script> -->
 <script>
-	function reply(bno) {
+	function replyInsert(bno) {
 		var obj = $('#rForm').serializeObject(); //{속성:값,속성:값}
 		obj.r_bno = bno;
 		console.log(obj);
@@ -55,10 +63,26 @@
 			type : 'post', //json으로 넘길땐 get은 안됨.
 			url : 'ajax/replyInsert',
 			data : obj,
+			dataType : 'json',
 			success : function(data) {
-				 location.reload();
+				console.log(data);
+				console.log(data.rList);
+				var rlist='';
+				for(var i=0;i<data.rList.length;i++){
+					rlist+=' 아이디 : '+data.rList[i].r_mbid
+						+' 내용 : '+data.rList[i].r_content
+						+' 날짜 : '+data.rList[i].r_date+'<br/>'
+						+"<a href='#'>답글달기</a>"
+						+"<a href='#'>신고하기</a><br/><hr>";
+					//var parsed = $.parseHTML(data);
+					/* console.log(parsed);
+					console.log(parsed[39]);
+					$('#replyList').html(parsed[39]);
+					alert("가져왔어용 ㅎㅎ"); */
+				};
+				$('#replyList').html(rlist);
 			},
-			error : function(error) {
+			error : function(error,xhr,status) {
 				alert("error")
 				console.log(xhr);
 				console.log(status);

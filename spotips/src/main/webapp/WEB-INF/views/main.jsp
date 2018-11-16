@@ -24,6 +24,6 @@
 
 <br />
 
-<a href="gopostUploadPg">게시판 페이지로 </a>
+<a href="getBoardList">게시판 페이지로 </a>
 </body>
 </html>

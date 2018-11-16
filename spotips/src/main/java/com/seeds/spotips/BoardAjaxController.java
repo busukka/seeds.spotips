@@ -33,21 +33,19 @@ public class BoardAjaxController {
 		out.print(json);
 	}*/
 	
-	@RequestMapping(value = "/postUpload" , produces = "application/json; charset=utf8")
-	public  ModelAndView postUpload(MultipartHttpServletRequest multi) {
-		mav=bm.postUpload(multi);
-		return mav;
-	};
+	
 	/*@RequestMapping(value = "/postInfo")
 	public  ModelAndView postInfo(String b_no) {
 		mav=bm.postInfo(b_no);
 		return mav;
 	};*/
-	
+		/*idx - replyInsert(Reply r)*/
 	@RequestMapping(value = "/replyInsert", produces = "application/json; charset=utf8")
-	public ModelAndView  replyInsert(Reply r) {
-		mav=bm.replyInsert(r);
-		return mav; //jackson Map-->json 변환해줌
+	public @ResponseBody Map<String, List<Reply>>  replyInsert(Reply r) {
+		//mav=bm.replyInsert(r);
+		System.out.println("replyInsert컨트롤러");
+		Map<String, List<Reply>> rMap=bm.replyInsert(r); 
+		return rMap; //jackson Map-->json 변환해줌
 		//{'rList', rList}---->{"rList":[],[],[]...}
 	}
 	
