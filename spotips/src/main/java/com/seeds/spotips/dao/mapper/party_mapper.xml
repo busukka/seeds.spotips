@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper	namespace="com.seeds.spotips.dao.PartyDao">
+
+
+	<!-- selectkey의 키프로퍼티의 결과값을 받아서 리턴함 그리고 바로 현재 bean의 변수이름과 맵핑하여 해당 변수의 값을 프로퍼티리턴값으로 set함 -->
+	<insert id="insertParty" parameterType="p"
+		useGeneratedKeys="true" keyProperty="p_no">
+		<selectKey keyProperty="p_no" resultType="String" order="AFTER">
+			SELECT 'P'||P_SEQ.CURRVAL FROM DUAL
+		</selectKey>
+		INSERT INTO P VALUES(
+							'P'||P_SEQ.NEXTVAL,#{p_leader},#{fl_no},SYSDATE,
+							TO_DATE(#{p_sdate},'YYYY-MM-DD,HH24:MI'),TO_DATE(#{p_edate},'YYYY-MM-DD,HH24:MI')
+							,#{p_name},#{p_place},#{p_total},DEFAULT,#{p_content}
+							)
+	</insert>
+	
+	<insert id="insertFileUpload" parameterType="java.util.List">
+		INSERT ALL
+    	<foreach collection="list" item="item" separator=" " >
+    		 INTO BU (BU_CODE, BU_FILESYS,BU_FILEORI, BU_PATH) 
+     		VALUES(#{item.bu_code}, #{item.bu_filesys}, #{item.bu_fileori},
+        		#{item.bu_path})
+    	</foreach>
+   		SELECT * FROM DUAL
+	</insert>
+	
+	<!-- 회원의 관심분야에 해당하는 모임만 Select -->
+	<select id="getPartyList" 
+	parameterType="List"
+	resultType="p">
+		SELECT * FROM P WHERE FL_NO IN 
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item.fc_flno}
+		</foreach>
+	</select>
+	
+	<select id="getFl" 
+	resultType="fl">
+		SELECT * FROM FL
+	</select>
+	
+	<select id="getFcList"
+	parameterType="String"
+	resultType="fc">
+		SELECT * FROM FC WHERE FC_MBID=#{fc_mbid}
+	</select>
+	
+	<select id="getBuList"
+	resultType="bu">
+		SELECT * FROM BU
+	</select>
+</mapper>

@@ -611,7 +611,7 @@ $("#bu_files").on('change', function () {
     image_holder.empty();
 
     if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg" ){
-        if (typeof (FileReader) != "undefined") {
+        if (typeof (FileReader) != "undefined") {//파일리더는 익스플로러9이상이나 크롬에서만 지원한다.
 
             //loop for each file selected for uploaded.
             for (var i = 0; i < countFiles; i++) {

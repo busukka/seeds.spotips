@@ -5,7 +5,6 @@ import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -43,20 +42,35 @@ public class MemberManagement {
 		String view = null;
 		BusMember bm = new BusMember();
 		GenMember gm = new GenMember();
+		Manager mg = new Manager();
 		AES256Util aes = new AES256Util("MgInsertSecurity");
 		// 암호화된 비번으로 계정 로그인할때
 		BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
 		String pwEncode = mDao.getSecurityPw(mb_id);
 		System.out.println("pwEncode=" + pwEncode);
-		if (pwEncode != null) {
+		if (pwEncode != null) { //관리자계정은 id가 암호화가 되어있기때문에 pw가 null로 가져와짐
 			int serial = mDao.getSerial(mb_id);
 			System.out.println("serial=" + serial);
 			if (pwEncoder.matches(mb_pw, pwEncode)) {
-
+				switch (serial) {
+				case 1:
+					gm=mDao.SelectGm(mb_id);
+					session.setAttribute("mb", gm);
+					break;
+					
+				case 2: case 3:
+					bm=mDao.SelectBm(mb_id);
+					session.setAttribute("mb", bm);
+					break;
+					
+				default:
+					break;
+				}
 				session.setAttribute("id", mb_id);
 				session.setAttribute("serial", serial);
 				// 원래 였다면 리퀘스트 영역이나 세션영역에 저장했겠지만 세션을 DI컨테이너에 오토와이어한다.
-				if(serial!=4) {
+				
+				if(serial!=4 && serial!=5) {
 				int selectCon = mDao.getSelcetCon(mb_id);
 				System.out.println("selectCon="+selectCon);
 				if (selectCon == 1) { // 관심분야 선택 여부 1=선택함
@@ -92,13 +106,18 @@ public class MemberManagement {
 				if(aes.decrypt(mgList.get(i).getMb_id()).equals(mb_id)) {
 					pwEncode = mgList.get(i).getMb_pw();
 					serial=mgList.get(i).getMb_serial();
+					mg=mgList.get(i);
+					//복호화 한 아이디를 세션에 넣고싶을경우 아래쓰면됨...(하지만 보안때문에 일단 안넣었음)
+					//mg.setMb_id(aes.decrypt(mgList.get(i).getMb_id()));
 					break;
 				}
 			}
 			if(pwEncode!=null) {
 				if(pwEncoder.matches(mb_pw, pwEncode)) {
-					session.setAttribute("id", mb_id);
 					session.setAttribute("serial", serial);
+					session.setAttribute("mb", mg);
+					System.out.println(mg.getMb_id());
+					System.out.println(mg.getMb_pw());
 					view = "main";
 				}else {
 					view = "loginPg";
@@ -260,10 +279,10 @@ public class MemberManagement {
 			getFieldList();
 			
 			gm.setMb_serial(1);
-			//mav.addObject("mb", gm);
+			mav.addObject("mb", gm);
 			session.setAttribute("id", gm.getMb_id());
 			session.setAttribute("serial", gm.getMb_serial());// 1
-			System.out.println("로그인:session에 id,pw저장");
+			System.out.println("회원가입:session에 id,pw저장");
 
 			view = "selectConcern";
 			System.out.println("insert성공:GM회원정보");
@@ -373,6 +392,7 @@ public class MemberManagement {
 		return mav;
 	}
 
+						/*idx-joinBusPg*/
 	public ModelAndView joinBusPg() {
 		mav = new ModelAndView();
 		String view = null;
@@ -388,12 +408,14 @@ public class MemberManagement {
 	
 	public ModelAndView selectConcern(String[] arr) {
 		mav = new ModelAndView();
+		GenMember gm = new GenMember();
+		BusMember bm = new BusMember();
 		FieldConcern fc;
 		String view = null;
 		String id = null;
 		boolean gmFc = false;
 		boolean bmFc = false;
-		int selectCon = 0;
+		int selectCon=0;
 		ArrayList<FieldConcern> fcList = new ArrayList<>();
 		int serial = (int) session.getAttribute("serial"); //회원가입 직후 선택이든 옛날에 가입하고 선택안해서 저선택이든 session에 serial 있어야함
 		System.out.println("concernMbSerial=" + serial);
@@ -401,7 +423,12 @@ public class MemberManagement {
 		
 		if (serial == 1) {
 			System.out.println("관분선택일반");
-			id = (String) session.getAttribute("id");
+			gm = (GenMember) session.getAttribute("mb");
+			if(gm==null) {
+				id= (String) session.getAttribute("id");
+			}else {
+				id = gm.getMb_id();
+			}
 			System.out.println("관분선택 gmid=" + id);
 			for (int i = 0; i < arr.length; i++) {
 				fc = new FieldConcern();
@@ -415,12 +442,13 @@ public class MemberManagement {
 			if (gmFc) {
 				mDao.updGenSeletCon(id);
 				if (session.getAttribute("selectCon") != null) {
-					selectCon = (int)session.getAttribute("selectCon");
-				}
-				if (selectCon == 0) {
 					view = "main";
 					session.removeAttribute("selectCon");
-				} else {
+				}
+				/*if (selectCon == 0) {
+					view = "main";
+					session.removeAttribute("selectCon");
+				}*/ else {
 					view = "loginPg";
 					session.invalidate();
 				}
@@ -430,7 +458,12 @@ public class MemberManagement {
 			}
 		} else if (serial == 2 || serial == 3) {
 			System.out.println("관분선택기업");
-			id = (String) session.getAttribute("id");
+			bm = (BusMember) session.getAttribute("mb");
+			if(bm==null) {
+				id= (String) session.getAttribute("id");
+			}else {
+				id = bm.getMb_id();
+			}
 			System.out.println("관분선택 bmid=" + id);
 			for (int i = 0; i < arr.length; i++) {
 				fc = new FieldConcern();
@@ -444,12 +477,14 @@ public class MemberManagement {
 			if (bmFc) {
 				mDao.updBusSelectCon(id);
 				if (session.getAttribute("selectCon") != null) {
-					selectCon = (int)session.getAttribute("selectCon");
-				}
-				if (selectCon == 0) {
+					//selectCon = (int)session.getAttribute("selectCon");
 					view = "main";
 					session.removeAttribute("selectCon");
-				} else {
+				}
+				/*if (selectCon == 0) {
+					view = "main";
+					session.removeAttribute("selectCon");
+				}*/ else {
 					view = "loginPg";
 					session.invalidate();
 				}

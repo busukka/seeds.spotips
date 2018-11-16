@@ -35,12 +35,6 @@ public class Party {
 	public void setP_name(String p_name) {
 		this.p_name = p_name;
 	}
-	public int getP_flno() {
-		return p_flno;
-	}
-	public void setP_flno(int p_flno) {
-		this.p_flno = p_flno;
-	}
 	public String getP_date() {
 		return p_date;
 	}
@@ -82,6 +76,12 @@ public class Party {
 	}
 	public void setP_content(String p_content) {
 		this.p_content = p_content;
+	}
+	public int getFl_no() {
+		return fl_no;
+	}
+	public void setFl_no(int fl_no) {
+		this.fl_no = fl_no;
 	}
 	
 	

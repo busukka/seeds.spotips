@@ -14,7 +14,37 @@
 <body>
 <h1>partyMainPg.jsp</h1>
 <div id="main-Wrap">
-	
+	<div class="pgName"><h4>모임 페이지</h4></div>
+	<div class="partyBtn-Wrap">
+		<button onclick="location.href='#'">모임정보관리</button>
+		<button onclick="location.href='goPartyInsertPg'">새모임 만들기</button>
+	</div>
+	<div id="partyList-Wrap">
+		<div id="partyList1">
+		
+		</div>
+		
+		<div id="partyList2">
+		
+		</div>
+	</div>
 </div>
 </body>
+<script type="text/javascript">
+$(document).ready(function() {
+	$.ajax({
+		url: 'ajax/getPartyList',
+		type: 'POST',
+		dataType:'html',
+		success: function(data){
+			//alert("로딩 성공.");
+			$('#partyList1').html(data);
+			},
+		error: function(error){
+			alert("error"); 
+			}
+		});  // ajax end
+
+});
+</script>
 </html>

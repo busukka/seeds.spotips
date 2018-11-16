@@ -19,11 +19,14 @@
 
 
 
-<h2>${id} ${serial}</h2>
+<h2>아이디:${mb.mb_id} 시리얼:${serial} 이름:${mb.mb_name} 프사:${mb.mb_imgsysname }</h2>
 
 
 <br />
 
-<a href="getBoardList">게시판 페이지로 </a>
+<a href="gopostUploadPg">게시판 페이지로 </a>
+<div>
+<a href="goPartyMainPg">모임 페이지로 </a>
+</div>
 </body>
 </html>
