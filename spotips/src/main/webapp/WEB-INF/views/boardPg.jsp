@@ -5,94 +5,70 @@
 <!DOCTYPE html>
 <html>
 
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="resources/js/jquery.serializeObject.js"></script> -->
- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/style.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/ionicons.min.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css">
-      <link href="${pageContext.request.contextPath}/resources/css/emoji.css" rel="stylesheet">
-    
-    <!--Google Font-->
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i" rel="stylesheet">
-    
-    <!--Favicon-->
-    <link rel="shortcut icon" type="image/png" href="${pageContext.request.contextPath}/resources/images/fav.png"/>
-
 <head>
 <meta charset="UTF-8">
-<style>
-/* 
-         #container {
-        width: 940px;
-        margin: 0px auto;
-        padding: 20px;
-        border: 1px solid #bcbcbc;
-      }
-      #header {
-        width: 680px;
-        padding: 20px;
-        margin-bottom: 20px;
-        float: left;
-        height: 80px;
-        border: 1px solid #bcbcbc;
-      }
-      #sideheader {
-        width: 160px;
-        padding: 20px;
-        margin-bottom: 20px;
-        float: right;
-        height: 80px;
-        border: 1px solid #bcbcbc;
-      }
-      #content {
-        width: 580px;
-         height: 195px;
-        padding: 20px;
-        margin-bottom: 20px;
-        float: left;
-        border: 1px solid #bcbcbc;
-      }
-      #sidebar {
-        width: 260px;
-        height: 195px;
-        padding: 20px;
-        margin-bottom: 20px;
-        float: right;
-        border: 1px solid #bcbcbc;
-      }
-      #footer {
-        clear: both;
-        padding: 20px;
-        border: 1px solid #bcbcbc;
-      }
-      #date{
-          float: right;  
-      }
-      #flno{
-          text-align: right;  
-      } */
-    
-</style>
-
-
 </head>
 
 <body>
+	<c:forEach var="b" items="${blist}">
+		<div class='post-content' style="z-index: 2;">
+			<div class='post-container'>
+				<img src='http://placehold.it/300x300' alt='user'
+					class='profile-photo-md pull-left' />
+				<div class='post-detail'>
+					<div class='user-info'>
+						<h5>
+							<a href='timeline.html' class='profile-link'>${b.b_mbid}</a> 
+							<span class='following'>${b.b_flno}</span>
+						</h5>
+						<p class='text-muted'>${b.b_date}</p>
+					</div>
+					<div class='reaction'>
+						<a class='btn text-green'><i class='icon ion-thumbsup'></i>likes 숫자</a>
+					</div>
+					<div class='line-divider'></div>
+					<c:forEach var="bu" items="${bulist}">
+						<c:set var="code" value="${bu.bu_code}" />
+						<c:if test="${b.b_no eq code}">
+							<img src='${bu.bu_path}${bu.bu_filesys}' alt='post-image' class='img-responsive post-image' />
+						</c:if>
+					</c:forEach>
+					<div class='post-text'>
+						<p>${b.b_content}</p>
+					</div>
+					<div class="line-divider">
+						<h5>댓글</h5>
+					</div>
+					<div id="${b.b_no}replyList">
+						<c:forEach var="r" items="${rList}">
+							<c:if test="${r.r_bno eq b.b_no}">
+								<div class="post-comment">
+									<img src="http://placehold.it/300x300" alt=""
+										class="profile-photo-sm" />
+										<a href="timeline.html" class="profile-link">${r.r_mbid}</a>
+										<p style="text-align: right">${r.r_date}</p><br/>
+										${r.r_content}<br/>
+										<a href='#'>답글달기</a>&nbsp;&nbsp;<a href='#'>신고하기</a>
+								</div>
+							</c:if>
+						</c:forEach>
+					</div>
+					&nbsp;&nbsp;
+					<form id="rForm" name='rForm'>
+						<div class="post-comment">
+							<img src="http://placehold.it/300x300" alt=""
+								class="profile-photo-sm" /> <input type="text" name="r_content"
+								id="r_content" class="form-control" placeholder="Post a comment">
+							<span><input type="button" value="입력" id="btn"
+								onclick="replyInsert('${b.b_no}')"
+								style="width: 60px; height: 45px"></span>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</c:forEach>
 
-			${makeBList}
-			
-			 <script src="<c:url value="/resources/js/jquery-3.1.1.min.js" />"></script>
-   <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
-   <script src="<c:url value="/resources/js/jquery.sticky-kit.min.js" />"></script>
-   <script src="<c:url value="/resources/js/jquery.scrollbar.min.js" />"></script>
-   <script src="<c:url value="/resources/js/script.js" />"></script>
-			
 </body>
-
-
-<script>
-	
-</script>
 
 </html>

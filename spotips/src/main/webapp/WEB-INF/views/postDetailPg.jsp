@@ -55,7 +55,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="resources/js/jquery.serializeObject.js"></script> -->
 <script>
-	function replyInsert(bno) {
+	/* function replyInsert(bno) {
 		var obj = $('#rForm').serializeObject(); //{속성:값,속성:값}
 		obj.r_bno = bno;
 		console.log(obj);
@@ -75,10 +75,10 @@
 						+"<a href='#'>답글달기</a>"
 						+"<a href='#'>신고하기</a><br/><hr>";
 					//var parsed = $.parseHTML(data);
-					/* console.log(parsed);
+					 console.log(parsed);
 					console.log(parsed[39]);
 					$('#replyList').html(parsed[39]);
-					alert("가져왔어용 ㅎㅎ"); */
+					alert("가져왔어용 ㅎㅎ"); 
 				};
 				$('#replyList').html(rlist);
 			},
@@ -88,7 +88,7 @@
 				console.log(status);
 			}
 		});//ajax End
-	};
+	}; */
 </script>
 
 

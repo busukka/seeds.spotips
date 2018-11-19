@@ -39,7 +39,7 @@ public class BoardController {
 	@RequestMapping("/gopostUploadPg")
 	public ModelAndView gopostUploadPg() {
 		mav = new ModelAndView();
-		mav.setViewName("postUploadPg");
+		mav=bm.gopostUploadPg();
 		return mav;
 	};
 	@RequestMapping("/boardPg")
@@ -55,11 +55,11 @@ public class BoardController {
 		return mav;
 	};
 	
-	@RequestMapping(value = "/postUpload" , produces = "application/json; charset=utf8")
+	/*@RequestMapping(value = "/postUpload")
 	public  ModelAndView postUpload(MultipartHttpServletRequest multi) {
 		mav=bm.postUpload(multi);
 		return mav;
-	};
+	};*/
 	
 	
 }//class end

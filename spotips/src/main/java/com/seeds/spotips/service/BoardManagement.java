@@ -25,8 +25,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.seeds.spotips.bean.Board;
 import com.seeds.spotips.bean.BoardUpload;
+import com.seeds.spotips.bean.FieldList;
 import com.seeds.spotips.bean.Reply;
 import com.seeds.spotips.dao.BoardDao;
+import com.seeds.spotips.dao.ImemberDao;
 import com.seeds.spotips.userclass.UploadFile;
 
 @Service
@@ -39,6 +41,9 @@ public class BoardManagement {
 	@Autowired
 	private HttpServletRequest request;
 
+	@Autowired
+	private ImemberDao mDao;
+	
 	private ModelAndView mav;
 
 	@Autowired
@@ -54,6 +59,7 @@ public class BoardManagement {
 		System.out.println("id확인=" + id);
 
 		if (id != null) {
+			MemberManagement mm=new MemberManagement();
 			List<Board> bList = bDao.getBoardList();
 			List<BoardUpload> buList = bDao.getBoardUploadList();
 			List<Reply> rList=bDao.getReplyList();
@@ -61,7 +67,7 @@ public class BoardManagement {
 			mav.addObject("blist",bList);
 			mav.addObject("bulist",buList);
 			mav.addObject("rlist",rList);
-			view = "postUploadPg";
+			view = "boardPg";
 		} else {
 			view = "main";
 		}
@@ -71,70 +77,67 @@ public class BoardManagement {
 		return mav;
 
 	}
+	
+	public void getFieldList() {
+		mav = new ModelAndView();
+		ArrayList<FieldList> fl = new ArrayList<FieldList>();
+		String FLCheckBoxHTML = null;
+		fl = mDao.getFieldList();
+		FLCheckBoxHTML = makeFieldListCheckBox(fl);
+		System.out.println("FLCheckBoxHTML생성 완료");
+		mav.addObject("FLCheckBoxHTML", FLCheckBoxHTML);
+
+	}
+	private String makeFieldListCheckBox(ArrayList<FieldList> fl) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < fl.size(); i++) {
+			sb.append("<input type='radio' id="+fl.get(i).getFl_name()+i+" name='b_flno' value='"
+					+ fl.get(i).getFl_no() + "'>" +"<label for="+fl.get(i).getFl_name()+i+">"
+					+ fl.get(i).getFl_name()+"</label>&nbsp;&nbsp;&nbsp;&nbsp;");
+		}
+		return sb.toString();
+	}
+
 	/*idx-makeBList(List<Board> bList, List<BoardUpload> buList)*/
 	private Object makeBList(List<Board> bList, List<BoardUpload> buList) {
 		StringBuilder sb = new StringBuilder();
-		/*for (int i = 0; i < bList.size(); i++) {
-			int replyConunt=bDao.getReplyCount(bList.get(i).getB_no());
-			int likesConunt=bDao.getLikesCount(bList.get(i).getB_no());
-			sb.append("<div id='container'>" + "		      <div id='header'>" + "		        <h1>"
-					+ bList.get(i).getB_mbid() + "</h1>" + "					<h5 id='flno'>"
-					+ bList.get(i).getB_flno() + "</h5>" + "		      </div>"
-					+ "				<div id='sideheader'>" + "		            <h3 id='date'>"
-					+ "		      <div id='content'>" + "		        <h2>내용</h2><br/>" + bList.get(i).getB_content()
-					+ bList.get(i).getB_date() + "					</h3>" + "		        </div>"
-					+ "		       </div> " + "		      <div id='sidebar'> " + "		      <h2>첨부사진/동영상</h2>");
-			for (int j = 0; j < buList.size(); j++) {
-				if (bList.get(i).getB_no().equals(buList.get(j).getBu_code())) {
-					sb.append("<div style='position: absolute;'>");
-					sb.append("<div style='position: relative; right:" + (80 + (j * 10)) + "px;'>");
-					sb.append("<img width='200' height='200' src='" + buList.get(j).getBu_path()
-							+ buList.get(j).getBu_filesys() + "'><br/>");
-					sb.append("</div></div>");
-				} // if end
-			} // for end
-			sb.append("</div>" + "<div id='footer'>" + "		<a href='#' onclick=\"postInfo('"
-					+ bList.get(i).getB_no() + "')\">댓글</a>+"+replyConunt+"<br/>" + "				<a href='likes?b_no="
-					+ bList.get(i).getB_no() + "'>좋아요</a>+"+likesConunt+"<br/>" + "				<a href='reportSend?b_no="
-					+ bList.get(i).getB_no() + "'>신고하기</a>" + "		      </div>" + "		    </div>");
-
-		}; // for end   */
+	sb.append("<div class='post-content' style='z-index:2;'>"+
+             "<div class='post-container'>"+
+              " <img src='http://placehold.it/300x300' alt='user' class='profile-photo-md pull-left' />"+
+              "  <div class='post-detail'>" +
+              "    <div class='user-info'>" +
+              "      <h5><a href='timeline.html' class='profile-link'>${b.b_mbid}</a> <span class='following'>${b.b_flno}</span></h5>" +
+              "      <p class='text-muted'>${b.b_date}</p>    " +
+              "  </div>" +
+              "  <div class='reaction'>   " +
+              "    <a class='btn text-green'><i class='icon ion-thumbsup'></i>likes 숫자</a>   " +
+              "  </div> "+
+              "  <div class='line-divider'></div>"+
+              " 				<img src='${bu.bu_path}${bu.bu_filesys}' alt='post-image' class='img-responsive post-image' />"+
+              "  <div class='post-text'> "+
+              "    <p>${b.b_content}</p> "+
+              "  </div>"+
+              "  <div class='line-divider'><h5>댓글</h5></div> "+
+              "  <div id=replyList> "+
+              "   				<div class='post-comment'>"+
+            /*  "   				 <img src="http://placehold.it/300x300" alt="" class="profile-photo-sm" />"+ */
+              " 				   <p><a href='timeline.html' class='profile-link'>${r.r_mbid}</a>${r.r_content}</p>"+
+            	  " 			 </div>"+
+            	  " 		</div>"+
+            	  " &nbsp;&nbsp;"+
+            	  " <form id='rForm' name='rForm'>"+
+            	  " <div class='post-comment'>"+
+            	  " <img src='http://placehold.it/300x300' alt='' class='profile-photo-sm' />"+
+            	  " <input type='text' name='r_content' id='r_content' class='form-control' placeholder='Post a comment'>"+
+            	  " 	<span><input type='button' value='입력' id='btn' onclick='replyInsert('${b .b_no}')'"+
+            	  " 		style='width: 60px; height: 45px'></span>"+
+            	  " </div>"+
+            	  " </form>"+
+            	  "    </div>"+
+            	  " </div>"+
+            	  " </div>");
 		
-		for (int i = 0; i < bList.size(); i++) {
-			int replyConunt=bDao.getReplyCount(bList.get(i).getB_no());
-			int likesConunt=bDao.getLikesCount(bList.get(i).getB_no());
-			boolean imgcheck = false;
-			sb.append("<div class='post-content'>");
-			
-			for (int j = 0; j < buList.size(); j++) {
-				if (bList.get(i).getB_no().equals(buList.get(j).getBu_code())) {
-					sb.append("<img style='max-height:50%; max-width:100%; margin-left: auto; margin-right: auto; display: block;'"
-							+ "src='"+ buList.get(j).getBu_path()+ buList.get(j).getBu_filesys() + "'>");
-				} // if end
-			} // for end
-			sb.append("              <div class='post-container' style='width:200px;'>" + 
-					"                <img src='http://placehold.it/300x300' alt='user' class='profile-photo-md pull-left' />" + 
-					"                <div class='post-detail'>" + 
-					"                  <div class='user-info'>" + 
-					"                    <h5><a href='timeline.html' class='profile-link'>"+ bList.get(i).getB_mbid() +"</a> <span class='following'>"+bList.get(i).getB_flno()+"</span></h5>" + 
-					"                    <p class='text-muted' style='text-align: right;'>"+ bList.get(i).getB_date()+"</p>" + 
-					"                  </div>" + 
-					"                  <div class='reaction'>" + 
-					"                  </div>" + 
-					"                  <div class='line-divider'></div>" + 
-					"                  <div class='post-text'>" + 
-					"                    <p>"+ bList.get(i).getB_content()+"</p>" + 
-					"                  </div>" + 
-					"                  <div class=\"line-divider\"><a href='#' onclick='postInfo('"+ bList.get(i).getB_no() + "')'>댓글</a>"+replyConunt+"</div>" + 
-					" 					<a class='btn text-green' href='likes?b_no="+bList.get(i).getB_no() +"'><i class='icon ion-thumbsup'></i>"+likesConunt+"</a>" + 
-					"                </div>" + 
-					"              </div>" + 
-					"            </div>");
-			
-			
-
-		}
-		; // for end
+		
 		return sb.toString();
 	}
 
@@ -143,7 +146,7 @@ public class BoardManagement {
 
 		mav = new ModelAndView();
 		String view = null;
-
+		System.out.println("들어오니");
 		// 폼으로 가져온 모든 데이터를 각각 변수에 저장합니다
 		int b_flno = Integer.parseInt(multi.getParameter("b_flno"));
 		int b_openlv = Integer.parseInt(multi.getParameter("b_openlv"));
@@ -164,9 +167,15 @@ public class BoardManagement {
 		// UploadFile upload=new UploadFile(); //공유
 		// 서버에 파일을 업로드 한 후,
 		// 오리지널 파일명, 시스템파일명을 리턴 후 맵에 저장
-		f = upload.fileUp(multi, board.getB_no());
-
-		if (f && b)
+		List<MultipartFile> file=multi.getFiles("bu_files");
+		String fileCheck=file.get(0).getOriginalFilename();
+		System.out.println("fileCheck="+fileCheck);
+		if(fileCheck.equals("") || fileCheck.equals(null) ) 
+			System.out.println("파일 첨부 없음");
+		else
+			f = upload.fileUp(multi, board.getB_no());
+		
+		if (f || b)
 			mav = getBoardList();
 		else
 			mav.setViewName("boardPg");
@@ -204,46 +213,23 @@ public class BoardManagement {
 
 	
 	/*idx-replyInsert(Reply r)*/
-	public Map<String, List<Reply>> replyInsert(Reply r) {
-		/*mav = new ModelAndView();
-		double r_no=1;
-		String view = null;
-		if(bDao.replyNoCheck(r.getR_bno())<=r_no) {
-			System.out.println("추가전rNo="+r_no);
-					r_no++;
-		}
-		Reply re=bDao.replyNoCheck(r.getR_bno());
-		if(re!=null) {
-			System.out.println("추가전rNo="+re.getR_no());
-					r_no=re.getR_no()+1;
-		}
-		System.out.println("추가후rNo="+r_no);
+	public Map<String, List<Reply>> replyInsert(String bno, String content) {
 		
-		r.setR_no(r_no);
-		r.setR_mbid(session.getAttribute("id").toString());
-		if(bDao.replyInsert(r)) {
-			List<Reply> rList=bDao.getReplyList(r.getR_bno());
-			//mav.addObject("rList", makerList(rList));
-			mav.addObject("rList", rList);
-			view="postDetailPg";
-		}else {
-		view="main";
-		}
-		mav.setViewName(view);
-		return mav;
-		 */
 		double r_no=1;
 		System.out.println("들어왔음");
 		Map<String, List<Reply>> jMap=null;
-		Reply re=bDao.replyNoCheck(r.getR_bno());
+		Reply re=bDao.replyNoCheck(bno);
 		if(re!=null) {
 			System.out.println("추가전rNo="+re.getR_no());
 					r_no=re.getR_no()+1;
 		}
 		System.out.println("추가후rNo="+r_no);
-		
+		Reply r = new Reply();
+		r.setR_bno(bno);
 		r.setR_no(r_no);
 		r.setR_mbid(session.getAttribute("id").toString());
+		r.setR_content(content);
+		System.out.println("내용 ="+content);
 		if(bDao.replyInsert(r)) {
 			List<Reply> rList=bDao.getReply(r.getR_bno());
 			jMap=new HashMap<String,List<Reply>>();
@@ -254,5 +240,25 @@ public class BoardManagement {
 		}
 		return jMap;
 	}//replyInsert end
+
+	public ModelAndView gopostUploadPg() {
+		mav = new ModelAndView();
+		
+		
+		String view = null;
+
+		String id = (String) session.getAttribute("id");
+		if (id != null) {
+			getFieldList();
+			view = "postUploadPg";
+		} else {
+			view = "main";
+		}
+
+		mav.setViewName(view);
+
+		return mav;
+	
+	}
 
 }//class end

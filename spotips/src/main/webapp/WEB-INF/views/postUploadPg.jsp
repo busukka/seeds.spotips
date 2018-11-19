@@ -59,8 +59,7 @@
 }
 </style>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="resources/js/jquery.serializeObject.js"></script>
+
 </head>
 <body>	
 		<div id="postUploadDiv">
@@ -128,12 +127,6 @@
 		<meta name="keywords" content="Social Network, Social Media, Make Friends, Newsfeed, Profile Page" />
 		<meta name="robots" content="index, follow" />
 		<title>News Feed | Check what your friends are doing</title>
-	
-	<!-- 이미지 슬라이드
-	================================================= -->
-	<link href="${pageContext.request.contextPath}/resources/css/js-image-slider.css" rel="stylesheet" type="text/css" />
-    <script src="<c:url value="/resources/js/js-image-slider.js" />" type="text/javascript"></script>
-    <link href="${pageContext.request.contextPath}/resources/css/generic.css" rel="stylesheet" type="text/css" />
 		
 	
 	
@@ -152,7 +145,7 @@
     <!--Favicon-->
     <link rel="shortcut icon" type="image/png" href="${pageContext.request.contextPath}/resources/images/fav.png"/>
 	<style>
-	.imgSelect {
+	.publicSelect {
 		cursor: pointer;
 	}
 
@@ -170,6 +163,24 @@
 		top: 5px;
 		right: 5px
 	}
+	.fieldSelect {
+		cursor: pointer;
+	}
+
+	.popupLayer2 {
+		position: absolute;
+		display: none;
+		background-color: #ffffff;
+		border: solid 2px #d0d0d0;
+		width: 300px;
+		height: 150px;
+		padding: 10px;
+	}
+	.popupLayer2 div {
+		position: absolute;
+		top: 5px;
+		right: 5px
+	}
 	#bu_files {
 		 display:none;
 	}
@@ -180,9 +191,13 @@
 	
 	
 	</head>
+	
+
+
+	
   <body>
 
-    
+ 	<jsp:include page="nav.jsp"></jsp:include>
 
     <div id="page-contents">
     	<div class="container">
@@ -197,7 +212,7 @@
             	<a href="#" class="text-white"><i class="ion ion-android-person-add"></i> 1,299 followers</a>
             </div><!--profile card ends-->
             <ul class="nav-news-feed">
-              <li><i class="icon ion-ios-paper"></i><div><a href="newsfeed.html">My Newsfeed</a></div></li>
+              <li><i class="icon ion-ios-paper"></i><div><a href="javascript:void(0)" onclick="showBoardFeed()">게시물</a></div></li>
               <li><i class="icon ion-ios-people"></i><div><a href="newsfeed-people-nearby.html">People Nearby</a></div></li>
               <li><i class="icon ion-ios-people-outline"></i><div><a href="newsfeed-friends.html">Friends</a></div></li>
               <li><i class="icon ion-chatboxes"></i><div><a href="newsfeed-messages.html">Messages</a></div></li>
@@ -225,84 +240,49 @@
             <!-- Post Create Box
             ================================================= -->
             <div id="image-holder"></div>
-            <form action="/postUpload" name="puform" id="puform" method="post" enctype="multipart/form-data">
+
+            <form  name="puform" id="puform" method="post" enctype="multipart/form-data">
              <div class="create-post">
             	<div class="row">
             		<div class="col-md-7 col-sm-7">
                   <div class="form-group">
                     <img src="http://placehold.it/300x300" alt="" class="profile-photo-md" />
-                    <textarea name="b_content" id="exampleTextarea" cols="30" rows="1" class="form-control" placeholder="Write what you wish"></textarea>
+                    <textarea name="b_content" id="exampleTextarea" cols="30" rows="1" class="form-control" placeholder="당신은 지금
+                    	무슨 생각을 하고 있나요?"></textarea>
                   </div>
                 </div>
             		<div class="col-md-5 col-sm-5">
                   <div class="tools">
                     <ul class="publishing-tools list-inline">
-                      <li><a class="imgSelect"><i class="ion-compose"></i></a></li>	
+                      <li><a class="publicSelect"><i class="icon ion-person-stalker"></i></a></li>	
                       <li><a onclick="check()" id="bu_filesimg"><i class="ion-images"></i></a>
-                      <input type="file" name="bu_files" id="bu_files"  multiple />
+                      <input type="file" name="bu_files" id="bu_files"   multiple />
                       </li>
-                      <li><a onclick="check()"><i class="ion-ios-videocam"></i></a></li>
-                      <li><a href="#"><i class="ion-map"></i></a></li>
+                     <!--  <li><a onclick="check()" id="bu_filesvdo"><i class="ion-ios-videocam"></i></a></li> -->
+                      <li><a class="fieldSelect"><i class="ion-ios-football"></i></a></li>
                     </ul>
-                    <div class="popupLayer">
+                    <div class="popupLayer" style="z-index:3;">
 								<div>
 									<span onClick="closeLayer(this)" style="cursor:pointer; font-size:1.5em;;" title="닫기">X</span>
 								</div>
 							 	<input type="radio" name="b_openlv" value=0 />공개 <br/>
 								<input type="radio" name="b_openlv" value=1 />친구만 공개 <br/>
 								<input type="radio" name="b_openlv" value=2 />비공개
-						</div> 
-                    <button class="btn btn-primary pull-right">글쓰기</button>
+						</div>
+                    <div class="popupLayer2" style="z-index:4;">
+								<div>
+									<span onClick="closeLayer(this)" style="cursor:pointer; font-size:1.5em;;" title="닫기">X</span>
+								</div>
+								${FLCheckBoxHTML}
+						</div>
+                    <button id="btn" class="btn btn-primary pull-right">글쓰기</button>
                   </div>
                 </div>
             	</div>
             </div>
             </form>
           <!--  Post Create Box End -->
-				
-			<div id="postUploadDiv">
-	<form action="/postUpload" name="puform" id="puform" method="post" enctype="multipart/form-data">
-		<table>
-			<tr align="center">
-				<td colspan="2"><h3>게시물 업로드</h3></td>
-			<tr>
-				<td>공개범위선택</td>
-				<td><input type="radio" name="b_openlv" value=0 />공개 
-				<input type="radio" name="b_openlv" value=1 />친구만 공개 
-				<input type="radio" name="b_openlv" value=2 />비공개</td>
-			</tr>
-			<tr>
-				<td>관련분야 선택</td>
-				<td>
-				<input type="radio" name="b_flno" value=1 />축구 
-				<input type="radio" name="b_flno" value=2 />농구 
-				<input type="radio" name="b_flno" value=3 />야구
-				</td>
-			</tr>
-			<tr>
-				<td>내용</td>
-				<td><input type="text" name="b_content" height="300" width="400" /></td>
-			</tr>
-			<tr>
-				<td>파일 첨부</td>
-				<td><input type="file" name="bu_files" id="bu_files"  multiple /></td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center">
-				<input type="button" id="btn" value="글작성" />
-				<input type="reset" value="취소" />
-				<input type="button" onclick="back()" value="리스트 보기" />
-				</td>
-			</tr>
-			<tr>
-			<td colspan="2">
-			<!-- <div id="image-holder"></div> -->
-			<!-- <img id="blah" src="#" alt="your image" /> -->
-			</td>
-			<tr>
-		</table>
-	</form>
-	</div>
+
 				
             <!-- Post Content
             ================================================= -->
@@ -310,61 +290,9 @@
 			<%-- <div class="col-md-12 col-sm-12" id="boardPeed" style="float:right; width:700;">
 					${makeBList}
 			</div> --%>
-            <c:forEach var="b" items="${blist}">
-          <div class='post-content'>
-          	<%--  <c:forEach var="bu" items="${bulist}">
-               <c:set var="code" value="${bu.bu_code}" />
-          		 <c:if test="${b.b_no eq code}">
-					<img width='200' height='200' src='${bu.bu_path}${bu.bu_filesys}' alt='post-image' class='img-responsive post-image' />
-				 </c:if> 
-			</c:forEach>  --%>
-              <div class='post-container'>
-                <img src='http://placehold.it/300x300' alt='user' class='profile-photo-md pull-left' />
-                <div class='post-detail'>
-                  <div class='user-info'>
-                    <h5><a href='timeline.html' class='profile-link'>${b.b_mbid}</a> <span class='following'>${b.b_flno}</span></h5>
-                    <p class='text-muted'>${b.b_date}</p>
-                  </div>
-                  <div class='reaction'>
-                    <a class='btn text-green'><i class='icon ion-thumbsup'></i>숫자 정리</a>
-                  </div> 
-                  <div class='line-divider'></div>
-                   <c:forEach var="bu" items="${bulist}">
-              			 <c:set var="code" value="${bu.bu_code}" />
-          					 <c:if test="${b.b_no eq code}">
-								<img src='${bu.bu_path}${bu.bu_filesys}' alt='post-image' class='img-responsive post-image' />
-							 </c:if> 
-					</c:forEach> 
-                  <div class='post-text'>
-                    <p>${b.b_content}</p>
-                  </div>
-                  <div class="line-divider"><h5>댓글</h5></div>
-                  <div id=replyList>
-                  <c:forEach var="r" items="${rList}">
-          				 <c:if test="${r.r_bno eq b.b_no}">
-                   				<div class="post-comment">
-                   				 <img src="http://placehold.it/300x300" alt="" class="profile-photo-sm" />
-                 				   <p><a href="timeline.html" class="profile-link">${r.r_mbid}</a>${r.r_content}</p>
-                 				 </div>
-                		  </c:if> 
-					</c:forEach> 
-					</div>
-					&nbsp;&nbsp;
-					<form id="rForm" name='rForm'>
-					<div class="post-comment">
-                    <img src="http://placehold.it/300x300" alt="" class="profile-photo-sm" />
-                    <input type="text" name="r_content" id="r_content" class="form-control" placeholder="Post a comment">
-                  	<span><input type="button" value="입력" id="btn" onclick="replyInsert('${b .b_no}')"
-							style="width: 60px; height: 45px"></span>
-                  </div>
-					</form>
-
-		<%-- onclick="reply(${b.b_no})" --%>
-	
-                </div>
-              </div>
-            </div>
-		</c:forEach>
+			<div class='feed-content' id='feed-content'>
+          
+		 </div>
 		</div>
 		</div>
 		</div>
@@ -379,19 +307,55 @@
    <script src="<c:url value="/resources/js/jquery.scrollbar.min.js" />"></script>
    <script src="<c:url value="/resources/js/script.js" />"></script>
  
- 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="resources/js/jquery.serializeObject.js"></script>
+ 	
  
  
  	<!-- div 뛰우기~~~ -->
  	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
  
   </body>
-<script type="text/javascript">
+
+
+<script> 
+
+$(document).ready(function() {
+	$.ajax({
+		url: 'getBoardList',
+		type: 'POST',
+		dataType:'html',
+		success: function(data){
+			//alert("로딩 성공.");
+			$('#feed-content').html(data);
+			},
+		error: function(error){
+			alert("error"); 
+			}
+		});  // ajax end
+});
+
+function showBoardFeed(){
+	$.ajax({
+		url: 'getBoardList',
+		type: 'POST',
+		dataType:'html',
+		success: function(data){
+			//alert("로딩 성공.");
+			$('#feed-content').html(data);
+			},
+		error: function(error){
+			alert("error"); 
+			}
+		});  // ajax end
+};
+
+
 function replyInsert(bno) {
+	alert("들어왔어영 리플");
+	//var ${b_no} = bno;
 	var obj = $('#rForm').serializeObject(); //{속성:값,속성:값}
 	obj.r_bno = bno;
 	console.log(obj);
+	
 	$.ajax({
 		type : 'post', //json으로 넘길땐 get은 안됨.
 		url : 'ajax/replyInsert',
@@ -402,16 +366,15 @@ function replyInsert(bno) {
 			console.log(data.rList);
 			var rlist='';
 			for(var i=0;i<data.rList.length;i++){
-				rlist+=' 아이디 : '+data.rList[i].r_mbid
-					+' 내용 : '+data.rList[i].r_content
-					+' 날짜 : '+data.rList[i].r_date+'<br/>'
-					+"<a href='#'>답글달기</a>"
-					+"<a href='#'>신고하기</a><br/><hr>";
-				//var parsed = $.parseHTML(data);
-				/* console.log(parsed);
-				console.log(parsed[39]);
-				$('#replyList').html(parsed[39]);
-				alert("가져왔어용 ㅎㅎ"); */
+				rlist+="<div class='post-comment'>"+
+					"<img src='http://placehold.it/300x300' class='profile-photo-sm' />"+
+					"	<a href='timeline.html' class='profile-link'>"+data.rList[i].r_mbid+"</a>"+
+					"	<p style='text-align: right'>"+data.rList[i].r_date+"</p><br/>"+
+					+data.rList[i].r_content+"<br/>"+
+					"	<a href='#'>답글달기</a>&nbsp;&nbsp;<a href='#'>신고하기</a>"+
+					"	</div>";
+					
+					alert("가져왔어용 ㅎㅎ"); 
 			};
 			$('#replyList').html(rlist);
 		},
@@ -424,32 +387,17 @@ function replyInsert(bno) {
 };
 
 
-        //The following script is for the group 2 navigation buttons.
-         function switchAutoAdvance() {
-            imageSlider.switchAuto();
-            switchPlayPauseClass();
-        }
-        function switchPlayPauseClass() {
-            var auto = document.getElementById('auto');
-            var isAutoPlay = imageSlider.getAuto();
-            auto.className = isAutoPlay ? "group2-Pause" : "group2-Play";
-            auto.title = isAutoPlay ? "Pause" : "Play";
-        }
-        switchPlayPauseClass();
-    </script> 
-
-<script> 
-
 /**이벤트 발생 (크롬,파이어폭스,사파이어 OK!) **/
- function eventOccur(evEle, evType){
- 	if (evEle.fireEvent) {
-	 evEle.fireEvent('on' + evType);
+ function eventOccur(files, Type){
+	
+ 	if (files.fireEvent) {
+	 files.fireEvent('on' + Type);
  	} else {
  	//MouseEvents가 포인트 그냥 Events는 안됨~ ??
 	 var mouseEvent = document.createEvent('MouseEvents');
 	//  API문서 initEvent(type,bubbles,cancelable) 
- 	mouseEvent.initEvent(evType, true, false);
-	 var transCheck = evEle.dispatchEvent(mouseEvent);
+ 	mouseEvent.initEvent(Type, true, false);
+	 var transCheck = files.dispatchEvent(mouseEvent);
 	 if (!transCheck) {
 	 //만약 이벤트에 실패했다면
  	console.log("클릭 이벤트 발생 실패!");
@@ -462,14 +410,14 @@ function check(){
  	/* alert(orgFile.value); 이벤트 처리가 끝나지 않은 타이밍이라 값 확인 안됨! 시간차 문제 */
 }
 
+
 function closeLayer( obj ) {
 	$(obj).parent().parent().hide();
 }
 
 $(function(){
-
 	/* 클릭 클릭시 클릭을 클릭한 위치 근처에 레이어가 나타난다. */
-	$('.imgSelect').click(function(e)
+	$('.publicSelect').click(function(e)
 	{
 		var sWidth = window.innerWidth;
 		var sHeight = window.innerHeight;
@@ -495,23 +443,38 @@ $(function(){
 			"position": "absolute"
 		}).show();
 	});
+});
+$(function(){
+	/* 클릭 클릭시 클릭을 클릭한 위치 근처에 레이어가 나타난다. */
+	$('.fieldSelect').click(function(e)
+	{
+		var sWidth = window.innerWidth;
+		var sHeight = window.innerHeight;
 
+		var oWidth = $('.popupLayer2').width();
+		var oHeight = $('.popupLayer2').height();
+
+		// 레이어가 나타날 위치를 셋팅한다.
+		var divLeft = e.clientX + 10;
+		var divTop = e.clientY + 5;
+
+		// 레이어가 화면 크기를 벗어나면 위치를 바꾸어 배치한다.
+		if( divLeft + oWidth > sWidth ) divLeft -= oWidth;
+		if( divTop + oHeight > sHeight ) divTop -= oHeight;
+
+		// 레이어 위치를 바꾸었더니 상단기준점(0,0) 밖으로 벗어난다면 상단기준점(0,0)에 배치하자.
+		if( divLeft < 0 ) divLeft = 0;
+		if( divTop < 0 ) divTop = 0;
+
+		$('.popupLayer2').css({
+			"top": '10',
+			"left": '10',
+			"position": "absolute"
+		}).show();
+	});
 });
 
-$(document).ready(function() {
-	$.ajax({
-		url: 'getBoardList',
-		type: 'POST',
-		dataType:'html',
-		success: function(data){
-			//alert("로딩 성공.");
-			$('#boardPeed').append(data);
-			},
-		error: function(error){
-			alert("error"); 
-			}
-		});  // ajax end
-});
+
 
 function postInfo(b_no){
 	$('#articleView_layer').addClass('open');
@@ -552,7 +515,7 @@ $(document).keydown(function(event){
 
 
 
-/* $(function(){ $("#btn").click(function(){
+ $(function(){ $("#btn").click(function(){
 	var formData = new FormData();
 	formData.append("b_openlv", $("input[name=b_openlv]").val());
 	formData.append("b_flno", $("input[name=b_flno]").val());
@@ -560,7 +523,7 @@ $(document).keydown(function(event){
 	for(var i=0;i<countFiles ;i++){
 	formData.append("bu_files", $("input[name=bu_files]")[0].files[i]);
 	}
-	formData.append("b_content", $("input[name=b_content]").val());
+	formData.append("b_content", $("textarea[name=b_content]").val());
 	
 	$.ajax({
 		url: 'ajax/postUpload',
@@ -571,7 +534,7 @@ $(document).keydown(function(event){
 		dataType:'html',
 		success: function(data){
 			//alert("글을 올리는데 성공하셨습니다.");
-			$('#boardPeed').html(data);
+			$('#feed-content').html(data);
 			var agent = navigator.userAgent.toLowerCase();
 	        if ( (navigator.appName == 'Netscape' && navigator.userAgent.search('Trident') != -1) || (agent.indexOf("msie") != -1) ) {
 	        	$('#postUpload').replaceWith($('#bu_files').clone(true));
@@ -580,12 +543,12 @@ $(document).keydown(function(event){
 	        }//if end
 			},
 		error: function(error){
-			alert("error"); 
+			//alert("error"); 
 			}
 		});  // ajax end
 	});
 	
-}); */
+});
 
 
 /* $(document).on("change", ".file_multi_video", function(evt) {
@@ -599,39 +562,65 @@ function back(){
 		form.attr("action","gopostUploadPg");
 	}
 	
+	$(document).on("change", ".file_multi_video", function(evt) {
+		  
+		});
+	
+/* function deleteImageAction(index){
+	console.log("index : "+index);
+	var Files = $('#bu_files')[0];
+	fileArr.splice(index,1);
+	
+	var img_id="#img_id_"+index;
+	$(img_id).remove();
+	console.log(Files);
 
+	
+}; */
+
+/* var fileArr=[];  */
 $("#bu_files").on('change', function () {
 	
     //Get count of selected files
     var countFiles = $(this)[0].files.length;
-
+    
     var imgPath = $(this)[0].value;
     var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
-    var image_holder = $("#image-holder");
-    image_holder.empty();
-
+   	console.log('extn='+extn);
+     var image_holder = $("#image-holder");
+    image_holder.empty(); 
+    
+    if (typeof (FileReader) != "undefined") {//파일리더는 익스플로러9이상이나 크롬에서만 지원한다.
     if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg" ){
-        if (typeof (FileReader) != "undefined") {//파일리더는 익스플로러9이상이나 크롬에서만 지원한다.
-
-            //loop for each file selected for uploaded.
+         
+		
             for (var i = 0; i < countFiles; i++) {
                 var reader = new FileReader();
                 reader.onload = function (e) {
-                    $("<img />", {
+                 /*   var html="<a href='javascript:void(0);' onclick='deleteImageAction("+index+")'"+
+                   "id='img_id_"+index+"'><img src='"+e.target.result+"' width='200px' height='200px'"+
+                   "class='thumb-image' ></a>";
+                   image_holder.append(html);
+                   index++; */
+                	 $("<img />", {
                         "src": e.target.result,
                             "class": "thumb-image",
                             "width": "200",
-                            "height": "200"
-                    }).appendTo(image_holder);
+                            "height": "200",
+                          
+                    }).appendTo(image_holder); 
                 }
                 image_holder.show();
                 reader.readAsDataURL($(this)[0].files[i]);
             }
-        } else {
-            alert("상위 버전의 브라우저를 사용하시면 미리보기를 사용하실수 있습니다.");
-        }
-    } else {
-        alert("이미지 파일 형식만 가능합니다.");
+        
+        
+    }else if(extn == "avi" || extn == "mp3" || extn == "wmv" || extn == "mpeg" || extn == "mpg" ||
+    	     extn == "mov" || extn == "swf" || extn == "flv" || extn == "tp" || extn == "ts"){
+	 
+    	
+		 } else {
+        alert("이미지나 동영상 파일 형식만 가능합니다.");
         var agent = navigator.userAgent.toLowerCase();
         if ( (navigator.appName == 'Netscape' && navigator.userAgent.search('Trident') != -1) || (agent.indexOf("msie") != -1) ) {
         	$('#bu_files').replaceWith($('#bu_files').clone(true));
@@ -639,7 +628,13 @@ $("#bu_files").on('change', function () {
         	$('#bu_files').val('');
         }//if end
     }
+    } else {
+        alert("상위 버전의 브라우저를 사용하시면 미리보기를 사용하실수 있습니다.");
+    }
+    
 });
+
+
 
 
 	/*  extn == "avi" || extn == "mp3" || extn == "wmv" || extn == "mpeg" || extn == "mpg" ||
