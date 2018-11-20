@@ -83,13 +83,14 @@ public class AdminController {
 	public ModelAndView concernInsert() {
 		ModelAndView mav = new ModelAndView();
 		mav=am.concernInsert();
+		System.out.println("컨트롤러 들어옴 concernInsert");
 		return mav;
 	}
 
-	@RequestMapping("/conChkForm") //관심분야 추가
+	@RequestMapping("/conChkForm") //관심분야 중복체크화면 이동
 	public ModelAndView conChkForm() {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("concernCheckForm.jsp");
+		mav.setViewName("concernCheckForm");
 		return mav;
 	}
 	
