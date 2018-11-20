@@ -54,11 +54,11 @@
 						</c:forEach>
 					</div>
 					&nbsp;&nbsp;
-					<form id="rForm" name='rForm'>
+					<form id="${b.b_no}rForm" name='${b.b_no}rForm'>
 						<div class="post-comment">
 							<img src="http://placehold.it/300x300" alt=""
 								class="profile-photo-sm" /> <input type="text" name="r_content"
-								id="r_content" class="form-control" placeholder="Post a comment">
+								id="${b.b_no}r_content" class="form-control" placeholder="Post a comment">
 							<span><input type="button" value="입력" id="btn"
 								onclick="replyInsert('${b.b_no}')"
 								style="width: 60px; height: 45px"></span>

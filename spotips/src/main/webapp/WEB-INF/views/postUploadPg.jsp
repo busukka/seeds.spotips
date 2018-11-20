@@ -3,122 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
-<%-- <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<style>
-#postUploadDiv{
-	float: center;
-	align-content: center;
-
-}
-
-#articleView_layer {
-	display: none;
-	position: fixed;
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%
-}
-
-#articleView_layer.open {
-	display: block;
-	color: red
-}
-
-#articleView_layer #bg_layer {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: #000;
-	opacity: .5;
-	filter: alpha(opacity = 50);
-	z-index: 100
-}
-
-#contents_layer {
-	position: absolute;
-	top: 40%;
-	left: 40%;
-	width: 400px;
-	height: 400px;
-	margin: -150px 0 0 -194px;
-	padding: 28px 28px 0 28px;
-	border: 2px solid #555;
-	background: #fff;
-	font-size: 12px;
-	z-index: 200;
-	color: #767676;
-	line-height: normal;
-	white-space: normal;
-	overflow: scroll
-}
-</style>
-
-
-</head>
-<body>	
-		<div id="postUploadDiv">
-	<form action="board/postUpload" name="puform" id="puform" method="post" enctype="multipart/form-data">
-		<table>
-			<tr align="center">
-				<td colspan="2"><h3>게시물 업로드</h3></td>
-			<tr>
-				<td>공개범위선택</td>
-				<td><input type="radio" name="b_openlv" value=0 />공개 
-				<input type="radio" name="b_openlv" value=1 />친구만 공개 
-				<input type="radio" name="b_openlv" value=2 />비공개</td>
-			</tr>
-			<tr>
-				<td>관련분야 선택</td>
-				<td>
-				<input type="radio" name="b_flno" value=1 />축구 
-				<input type="radio" name="b_flno" value=2 />농구 
-				<input type="radio" name="b_flno" value=3 />야구
-				</td>
-			</tr>
-			<tr>
-				<td>내용</td>
-				<td><input type="text" name="b_content" height="300" width="400" /></td>
-			</tr>
-			<tr>
-				<td>파일 첨부</td>
-				<td><input type="file" name="bu_files" id="bu_files"  multiple /></td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center">
-				<input type="button" id="btn" value="글작성" />
-				<input type="reset" value="취소" />
-				<input type="button" onclick="back()" value="리스트 보기" />
-				</td>
-			</tr>
-			<tr>
-			<td colspan="2">
-			<div id="image-holder"></div>
-			<!-- <img id="blah" src="#" alt="your image" /> -->
-			</td>
-			<tr>
-		</table>
-	</form>
-	</div>
-	
-	<div id="boardPeed">
-	${makeBList}
-	</div>
-	
-	<div align="center">${paging}</div>
-	<div id="articleView_layer">
-		<div id="bg_layer"></div>
-		<div id="contents_layer"></div>
-	</div>
-	
-	
-	
-</body>  --%>
 
 	<head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -352,14 +236,23 @@ function showBoardFeed(){
 function replyInsert(bno) {
 	alert("들어왔어영 리플");
 	//var ${b_no} = bno;
-	var obj = $('#rForm').serializeObject(); //{속성:값,속성:값}
-	obj.r_bno = bno;
-	console.log(obj);
+	var	rcontent='#'+bno+'r_content'
+	
+	console.log($(rcontent).val());
+	//console.log($(rForm)[0].find("[name=r_content]").val());
+	
+	//var obj = $('#rForm').serializeObject(); //{속성:값,속성:값}
+	//obj.r_bno = bno;
+	//console.log(obj);
+	
+	//$("#joinuser").find("[name=chk_confirm]:checked").val();
+	//$('#form1 [name="param"]').val()
+	
 	
 	$.ajax({
 		type : 'post', //json으로 넘길땐 get은 안됨.
 		url : 'ajax/replyInsert',
-		data : obj,
+		data : {b_no:bno , r_content:$(rcontent).val()},
 		dataType : 'json',
 		success : function(data) {
 			console.log(data);

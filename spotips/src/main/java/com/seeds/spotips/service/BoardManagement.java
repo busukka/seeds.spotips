@@ -213,23 +213,24 @@ public class BoardManagement {
 
 	
 	/*idx-replyInsert(Reply r)*/
-	public Map<String, List<Reply>> replyInsert(String bno, String content) {
-		
+	public Map<String, List<Reply>> replyInsert(String b_no, String r_content) {
+		System.out.println("b_no="+b_no);
+		System.out.println("r_content="+r_content);
 		double r_no=1;
 		System.out.println("들어왔음");
 		Map<String, List<Reply>> jMap=null;
-		Reply re=bDao.replyNoCheck(bno);
+		Reply re=bDao.replyNoCheck(b_no);
 		if(re!=null) {
 			System.out.println("추가전rNo="+re.getR_no());
 					r_no=re.getR_no()+1;
 		}
 		System.out.println("추가후rNo="+r_no);
 		Reply r = new Reply();
-		r.setR_bno(bno);
+		r.setR_bno(b_no);
 		r.setR_no(r_no);
 		r.setR_mbid(session.getAttribute("id").toString());
-		r.setR_content(content);
-		System.out.println("내용 ="+content);
+		r.setR_content(r_content);
+		System.out.println("내용 ="+r_content);
 		if(bDao.replyInsert(r)) {
 			List<Reply> rList=bDao.getReply(r.getR_bno());
 			jMap=new HashMap<String,List<Reply>>();

@@ -48,10 +48,10 @@ public class BoardAjaxController {
 	
 		/*idx - replyInsert(Reply r)*/
 	@RequestMapping(value = "/replyInsert", produces = "application/json; charset=utf8")
-	public @ResponseBody Map<String, List<Reply>>  replyInsert(String bno,String content) {
+	public @ResponseBody Map<String, List<Reply>>  replyInsert(String b_no,String r_content) {
 		//mav=bm.replyInsert(r);
 		System.out.println("replyInsert컨트롤러");
-		Map<String, List<Reply>> rMap=bm.replyInsert(bno,content); 
+		Map<String, List<Reply>> rMap=bm.replyInsert(b_no,r_content); 
 		return rMap; //jackson Map-->json 변환해줌
 		//{'rList', rList}---->{"rList":[],[],[]...}
 	}
