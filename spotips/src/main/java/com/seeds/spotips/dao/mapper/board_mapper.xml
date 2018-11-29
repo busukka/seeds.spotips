@@ -60,20 +60,28 @@
 	SELECT max(R_NO) AS R_NO FROM R WHERE R_BNO=#{b_no}
 	</select>
 
-	<!-- 총 댓글수 확인 -->
-	<select id="getReplyCount" parameterType="String" resultType="int"> 
-	SELECT COUNT(R_NO) AS R_NO FROM R WHERE R_BNO=#{b_no}
-	</select>
-	
-	<!-- 총 좋아요수 확인  -->
-	<select id="getLikesCount" parameterType="String" resultType="int"> 
-	SELECT COUNT(LK_ON) FROM LK WHERE LK_BNO=#{b_no}
-	</select>
-	
 	<!-- 파일 업로드 했는지 확인(사용 안하는중) -->
 	<select id="getBoardUploadCount" parameterType="String" resultType="int"> 
 	SELECT COUNT(BU_FILESYS) AS BU_FILESYS FROM BU WHERE BU_CODE=#{b_no}
 	</select>
+	
+	<!-- 모든 회원의 아이디,비밀번호,이름,프로필사진 가져오기 -->
+	<select id="getprofileList" resultType="mb"> 
+	SELECT MB_ID,MB_PW,MB_NAME,MB_IMGSYSNAME FROM VIEW_MBLOGIN
+	</select>
+	
+	<!-- 모든 회원의 아이디,비밀번호,이름,프로필사진 가져오기 -->
+	<select id="getFieldList" resultType="fl"> 
+	SELECT * FROM FL 
+	</select>
+	
+	<!-- 총 좋아요수 확인  -->
+	<select id="getLikesList" resultType="int"> 
+	SELECT * FROM LK
+	</select>
+	
+	
+	
 	
 </mapper>
 

@@ -3,122 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
-<%-- <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<style>
-#postUploadDiv{
-	float: center;
-	align-content: center;
-
-}
-
-#articleView_layer {
-	display: none;
-	position: fixed;
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%
-}
-
-#articleView_layer.open {
-	display: block;
-	color: red
-}
-
-#articleView_layer #bg_layer {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: #000;
-	opacity: .5;
-	filter: alpha(opacity = 50);
-	z-index: 100
-}
-
-#contents_layer {
-	position: absolute;
-	top: 40%;
-	left: 40%;
-	width: 400px;
-	height: 400px;
-	margin: -150px 0 0 -194px;
-	padding: 28px 28px 0 28px;
-	border: 2px solid #555;
-	background: #fff;
-	font-size: 12px;
-	z-index: 200;
-	color: #767676;
-	line-height: normal;
-	white-space: normal;
-	overflow: scroll
-}
-</style>
-
-
-</head>
-<body>	
-		<div id="postUploadDiv">
-	<form action="board/postUpload" name="puform" id="puform" method="post" enctype="multipart/form-data">
-		<table>
-			<tr align="center">
-				<td colspan="2"><h3>게시물 업로드</h3></td>
-			<tr>
-				<td>공개범위선택</td>
-				<td><input type="radio" name="b_openlv" value=0 />공개 
-				<input type="radio" name="b_openlv" value=1 />친구만 공개 
-				<input type="radio" name="b_openlv" value=2 />비공개</td>
-			</tr>
-			<tr>
-				<td>관련분야 선택</td>
-				<td>
-				<input type="radio" name="b_flno" value=1 />축구 
-				<input type="radio" name="b_flno" value=2 />농구 
-				<input type="radio" name="b_flno" value=3 />야구
-				</td>
-			</tr>
-			<tr>
-				<td>내용</td>
-				<td><input type="text" name="b_content" height="300" width="400" /></td>
-			</tr>
-			<tr>
-				<td>파일 첨부</td>
-				<td><input type="file" name="bu_files" id="bu_files"  multiple /></td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center">
-				<input type="button" id="btn" value="글작성" />
-				<input type="reset" value="취소" />
-				<input type="button" onclick="back()" value="리스트 보기" />
-				</td>
-			</tr>
-			<tr>
-			<td colspan="2">
-			<div id="image-holder"></div>
-			<!-- <img id="blah" src="#" alt="your image" /> -->
-			</td>
-			<tr>
-		</table>
-	</form>
-	</div>
-	
-	<div id="boardPeed">
-	${makeBList}
-	</div>
-	
-	<div align="center">${paging}</div>
-	<div id="articleView_layer">
-		<div id="bg_layer"></div>
-		<div id="contents_layer"></div>
-	</div>
-	
-	
-	
-</body>  --%>
 
 	<head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -145,6 +29,18 @@
     <!--Favicon-->
     <link rel="shortcut icon" type="image/png" href="${pageContext.request.contextPath}/resources/images/fav.png"/>
 	<style>
+	.rr_comment{
+		display: none;
+	}
+	.reform-control{
+ 		 background: #fff;
+		  border: 1px solid #f1f2f2;
+		  box-shadow: none;
+		  border-radius: 4px;
+		  color: #939598;
+		  width: 85% !important;
+	}
+	
 	.publicSelect {
 		cursor: pointer;
 	}
@@ -275,7 +171,7 @@
 								</div>
 								${FLCheckBoxHTML}
 						</div>
-                    <button id="btn" class="btn btn-primary pull-right">글쓰기</button>
+                    <button id="postUp" class="btn btn-primary pull-right">글쓰기</button>
                   </div>
                 </div>
             	</div>
@@ -315,8 +211,24 @@
  
   </body>
 
-
 <script> 
+
+function showrere_coment(key){
+	/* $('#'+bno+rno+'rr_coment').style.display = 'block'; */
+	//console.log($('#'+key+'rr_coment'));
+	$('#'+key+'r_comment').show();
+	$('#'+key+'r_content').show();
+	$('#'+key+'btn').show();
+	console.log("$(key+'rr_comment')="+$(key+'r_comment').css('display','block'));
+	console.log("$(key+'r_content')="+$(key+'r_content').css('display','block'));
+	console.log("$(key+'btn')="+$(key+'btn').css('display','block'));
+	/* $(key+'rr_comment').css('display','block');
+	$(key+'r_content').css('display','block');
+	$(key+'btn').css('display','block'); */
+	
+};
+
+
 
 $(document).ready(function() {
 	$.ajax({
@@ -349,42 +261,96 @@ function showBoardFeed(){
 };
 
 
-function replyInsert(bno) {
-	alert("들어왔어영 리플");
-	//var ${b_no} = bno;
-	var obj = $('#rForm').serializeObject(); //{속성:값,속성:값}
-	obj.r_bno = bno;
-	console.log(obj);
-	
-	$.ajax({
+function replyInsert(b_no,rCheck) {
+	var tagId='#'+b_no+'r_content';
+	var r_content = $(tagId).val();
+	 $.ajax({
 		type : 'post', //json으로 넘길땐 get은 안됨.
 		url : 'ajax/replyInsert',
-		data : obj,
+		data : {b_no : b_no , r_content : r_content , rCheck : rCheck},
 		dataType : 'json',
 		success : function(data) {
 			console.log(data);
-			console.log(data.rList);
-			var rlist='';
-			for(var i=0;i<data.rList.length;i++){
-				rlist+="<div class='post-comment'>"+
-					"<img src='http://placehold.it/300x300' class='profile-photo-sm' />"+
-					"	<a href='timeline.html' class='profile-link'>"+data.rList[i].r_mbid+"</a>"+
-					"	<p style='text-align: right'>"+data.rList[i].r_date+"</p><br/>"+
-					+data.rList[i].r_content+"<br/>"+
-					"	<a href='#'>답글달기</a>&nbsp;&nbsp;<a href='#'>신고하기</a>"+
-					"	</div>";
-					
-					alert("가져왔어용 ㅎㅎ"); 
-			};
-			$('#replyList').html(rlist);
+			console.log(data[0].mList[0].mb_imgsysname);//==mList
+			console.log(data[1]);//==rList
+			var Member=data[0].mList[0];
+			
+			var rlist="";
+			  for(var i=0;i<data[1].rList.length;i++){
+				  if(data[1].rList[i].r_no%1.0==0){
+				 var Member;
+				 for(var j=0;j<data[0].mList.length;j++){
+					if( data[1].rList[i].r_mbid==data[0].mList[j].mb_id){
+						Member=data[0].mList[j];
+					}//if end
+				 }//mList for end
+				 var r_no=parseInt(data[1].rList[i].r_no);
+				 rlist+="<div class='row' id='"+b_no+data[1].rList[i].r_no+"'>"+
+							"<div class='row'> " + 
+							"		<div class='col-md-9 col-sm-9' style='float: left;'> " + 
+							"			<img src='resources/upload/"+Member.mb_imgsysname+"' alt='' " + 
+							"				class='profile-photo-sm' /> <a href='timeline.html' " + 
+							"				class='profile-link'>"+Member.mb_name+"</a> " + 
+							"	&nbsp;&nbsp;&nbsp;&nbsp;	"+data[1].rList[i].r_content+"</div> " + 
+							"		<div class='col-md-3 col-sm-3' style='float: right;'> " + 
+							"			<p style='text-align: right'>"+data[1].rList[i].r_date+"<br /> "+ 
+							"				 <a href='javascript:void(0)' id='"+b_no+r_no+"showrere_coment' "+ 
+							"							onclick=\"showrere_coment("+
+							"					'"+b_no+r_no+"')	\" "+
+							"					>답글달기</a>&nbsp;&nbsp; " + 
+							"				<a href='#'>신고하기</a> " + 
+							"			</p> " + 
+							"		</div> " + 
+							"	</div> "+
+							"</div>"+
+							"<div id='"+b_no+r_no+"reReplyList'>";
+				  };//if end
+				 for(var k=0; data[1].rList.length>k;k++) {
+						if(parseInt(data[1].rList[i].r_no)==parseInt(data[1].rList[k].r_no))
+						if(data[1].rList[k].r_no%1.0!=0) {
+							for(var l=0;l<data[0].mList.length;l++){
+								if( data[1].rList[k].r_mbid==data[0].mList[l].mb_id){
+									Member=data[0].mList[l];
+								}//if end
+							 }//mList for end
+				 rlist+="<div class='row'> " + 
+						"		<div class='col-md-1 col-sm-1'></div> " + 
+						"		<div class='col-md-3 col-sm-3' style='float: left;'> " +
+						"			<i class='icon ion-ios-redo'></i>"+
+						"					<img src='"+Member.mb_imgsysname+"' alt='' " + 
+						"						class='profile-photo-sm' /> <a href='timeline.html' " + 
+						"						class='profile-link'>"+Member.mb_name+"</a> " + 
+						"		</div> " + 
+						"		<div class='col-md-5 col-sm-5'>"+data[1].rList[k].r_content+"</div> " + 
+						"		<div class='col-md-3 col-sm-3' style='float: right;'> " + 
+						"			<p style='text-align: right'>"+data[1].rList[k].r_date+"<br /> <a href='#'>신고하기</a> " + 
+						"			</p> " + 
+						"		</div> " + 
+						"	</div> ";
+						}// 답글인지
+					}//답글 for 문 end
+						 rlist+="</div></div>"+
+								"<div id='"+b_no+r_no+"rr_comment'"+ 
+								"			class='rr_comment' >${id}보드매니지먼트179줄 수정 해서 닉네임으로 바꾸기"+
+								"	<input type='text' name='"+b_no+r_no+"r_content'"+
+								" 						id='"+b_no+r_no+"r_content' " +
+								"	class='reform-control' placeholder='답글을 입력해주세요' style='display:none;'>	"+
+								"	<span><input type='button' value='입력' id='"+b_no+r_no+"btn'" + 
+								"	onclick=\"replyInsert('"+b_no+r_no+"',"+b_no.length+")\" style='display:none;' ></span> "+ 
+								"	</div>	";
+			 };//rList for end 
+			 $('#'+b_no+'replyList').html(rlist);
 		},
 		error : function(error,xhr,status) {
 			alert("error")
 			console.log(xhr);
 			console.log(status);
 		}
-	});//ajax End
+	});//ajax End 
 };
+
+
+
 
 
 /**이벤트 발생 (크롬,파이어폭스,사파이어 OK!) **/
@@ -515,17 +481,18 @@ $(document).keydown(function(event){
 
 
 
- $(function(){ $("#btn").click(function(){
+ $(function(){ $("#postUp").click(function(){
 	var formData = new FormData();
-	formData.append("b_openlv", $("input[name=b_openlv]").val());
-	formData.append("b_flno", $("input[name=b_flno]").val());
+	formData.append("b_openlv", $("input[name=b_openlv]:checked").val());
+	formData.append("b_flno", $("input[name=b_flno]:checked").val());
 	var countFiles = $("input[name=bu_files]")[0].files.length;
 	for(var i=0;i<countFiles ;i++){
 	formData.append("bu_files", $("input[name=bu_files]")[0].files[i]);
 	}
 	formData.append("b_content", $("textarea[name=b_content]").val());
 	
-	$.ajax({
+	
+	 $.ajax({
 		url: 'ajax/postUpload',
 		data: formData, 
 		processData: false, 
@@ -545,10 +512,11 @@ $(document).keydown(function(event){
 		error: function(error){
 			//alert("error"); 
 			}
-		});  // ajax end
+		});  // ajax end 
 	});
 	
 });
+
 
 
 /* $(document).on("change", ".file_multi_video", function(evt) {

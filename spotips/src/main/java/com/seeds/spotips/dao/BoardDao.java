@@ -5,6 +5,9 @@ import java.util.Map;
 
 import com.seeds.spotips.bean.Board;
 import com.seeds.spotips.bean.BoardUpload;
+import com.seeds.spotips.bean.FieldList;
+import com.seeds.spotips.bean.Likes;
+import com.seeds.spotips.bean.Member;
 import com.seeds.spotips.bean.Reply;
 
 public interface BoardDao {
@@ -27,13 +30,15 @@ public interface BoardDao {
 
 	public Reply replyNoCheck(String b_no);
 
-	public int getReplyCount(String b_no);
-
-	public int getLikesCount(String b_no);
-
 	public int getBoardUploadCount(String b_no);
 
 	public List<Reply> getReplyList();
+
+	public List<Member> getprofileList();
+	
+	public List<FieldList> getFieldList();
+
+	public List<Likes> getLikesList();
 
 
 }
