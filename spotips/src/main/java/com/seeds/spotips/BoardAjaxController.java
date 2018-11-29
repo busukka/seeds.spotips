@@ -1,5 +1,6 @@
 package com.seeds.spotips;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -48,10 +49,11 @@ public class BoardAjaxController {
 	
 		/*idx - replyInsert(Reply r)*/
 	@RequestMapping(value = "/replyInsert", produces = "application/json; charset=utf8")
-	public @ResponseBody Map<String, List<Reply>>  replyInsert(String b_no,String r_content) {
+	public @ResponseBody ArrayList<Map>  replyInsert(String b_no,String r_content,int rCheck) {
 		//mav=bm.replyInsert(r);
 		System.out.println("replyInsert컨트롤러");
-		Map<String, List<Reply>> rMap=bm.replyInsert(b_no,r_content); 
+		System.out.println("rCheck="+rCheck);
+		ArrayList<Map> rMap=bm.replyInsert(b_no,r_content,rCheck); 
 		return rMap; //jackson Map-->json 변환해줌
 		//{'rList', rList}---->{"rList":[],[],[]...}
 	}
